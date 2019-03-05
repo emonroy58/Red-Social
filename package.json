@@ -1,0 +1,29 @@
+{
+  "name": "d",
+  "version": "1.0.0",
+  "description": "Una red social para comunicar a alumnos de una escuela",
+  "main": "index.js",
+  "scripts": {
+    "htmlhint": "htmlhint src/*.html test/*.html",
+    "eslint": "eslint --ext .js src/ test/",
+    "pretest": "npm run eslint && npm run htmlhint",
+    "test": "jest --coverage"
+  },
+  "dependencies": {
+    "eslint": "^5.9.0",
+    "eslint-plugin-jest": "^22.1.2",
+    "htmlhint": "^0.10.1",
+    "jest": "^23.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DianaLiz11/Red-Social.git"
+  },
+  "author": "Ely,Elena,Diana",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DianaLiz11/Red-Social/issues"
+  },
+  "homepage": "https://github.com/DianaLiz11/Red-Social#readme"
+
+}
