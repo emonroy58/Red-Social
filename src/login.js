@@ -40,21 +40,24 @@
 const btnGoogle = document.getElementById('btn-google');
 
 btnGoogle.addEventListener('click', ()=>{
-  login()
+  googleSigIn()
 }  );
 
-function login(){
-    function newLoginHappened(user){
-        if (user){
-            app(user);
-        }else{
+function googleSigIn(){
+    
             var provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithRedirect(provider);
-         }
+            firebase.auth().signInWithPopup(provider).then(function(result){
+              console.log(result)
+              console.log("success.goole Account")
+            })
+            .catch(function(err){
+              console.log(err);
+              console.log("Intento fallido")
+            })
   
     }
-    firebase.auth().onAuthStateChanged(newLoginHappened);
-  }
+   // firebase.auth().onAuthStateChanged(newLoginHappened);
+  
 
 function app(){
     document.getElementById('user-name').innerHTML= user.displayName;
