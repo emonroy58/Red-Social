@@ -195,10 +195,7 @@ function googleSigIn(){
     console.log(result)
     console.log("success.goole Account")
   })
-  .then(function(){
-    checkEmail();
-    location.href='./editprofile.html';
-  })
+  
   .catch(function(err){
     console.log(err);
     console.log("Intento fallido")
