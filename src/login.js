@@ -20,7 +20,7 @@
       signInOptions: [
         // Leave the lines as is for the providers you want to offer your users.
        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        //firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+       firebase.auth.FacebookAuthProvider.PROVIDER_ID,
         //firebase.auth.TwitterAuthProvider.PROVIDER_ID,
         //firebase.auth.GithubAuthProvider.PROVIDER_ID,          
         //firebase.auth.PhoneAuthProvider.PROVIDER_ID,
@@ -34,23 +34,24 @@
     ui.start('#firebaseui-auth-container', uiConfig);
 })()
 
-const btnGoogle = document.getElementById('google.com');
 
-btnGoogle.addEventListener('click', ()=>{
-  googleSigIn()
-}  );
+//const btnGoogle = document.getElementById('google.com');
+
+//btnGoogle.addEventListener('click', ()=>{
+  //googleSigIn()
+//}  );
 
 function googleSigIn(){
     
-            var provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider).then(function(result){
-              console.log(result)
-              console.log("success.goole Account")
-            })
-            .catch(function(err){
-              console.log(err);
-              console.log("Intento fallido")
-            })
+            //var provider = new firebase.auth.GoogleAuthProvider();
+            //firebase.auth().signInWithPopup(provider).then(function(result){
+              //console.log(result)
+              //console.log("success.goole Account")
+            //})
+            //.catch(function(err){
+              //console.log(err);
+              //console.log("Intento fallido")
+            //})
   
     }
    
