@@ -58,3 +58,40 @@ function register(){
     }
   });
 }
+
+
+function singIn(){
+  const emailSingIn = document.getElementById('email_sing_in').value;
+  const passwordSingIn = document.getElementById('password_sing_in').value;
+
+  firebase.auth().singInWithEmailAndPasword(emailSingIn,passwordSingIn)
+  .catch(function(error){
+    //Handle Erros here.
+    var errorCode = error.code;
+    var errorMessages = error.messages;
+  })
+}
+
+//var provider = new firebase.auth.GoogleAuthProvider();
+
+function observer(){
+  firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+      console.log('hay usuario')
+    // User is signed in.
+    var displayName = user.displayName;
+    var email = user.email;
+    var emailVerified = user.emailVerified;
+    var photoURL = user.photoURL;
+    var isAnonymous = user.isAnonymous;
+    var uid = user.uid;
+    var providerData = user.providerData;
+    // ...
+  } else {
+    // User is signed out.
+    console.log('no hay usuario')
+    // ...
+  }
+});
+}
+observer();
