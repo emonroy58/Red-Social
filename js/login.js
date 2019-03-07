@@ -128,14 +128,7 @@ function observer() {
 }
 observer();
 
-// function SingOut() {
-//   firebase.auth().singOut()
-//   .then(function(error){
-//     console.log(Saliendo)
-//   })
-//   .catch((err) => {
-//     console.log(error)
-//   })
+
 
 const checkEmail = () => {
   var user = firebase.auth().currentUser;
@@ -180,10 +173,35 @@ if(location.href.includes('login.html')){
   sendButton.addEventListener('click', function () {
     singIn();
   });
+
+ 
 }
 
 
 if(location.href.includes('editprofile.html')){
   const signOutButton = document.getElementById('signOut-button');
   signOutButton.addEventListener('click', singOut)
+}
+
+
+
+const btnGoogle = document.getElementById('btn-google');
+btnGoogle.addEventListener('click', ()=>{
+  googleSigIn()
+}  );
+
+function googleSigIn(){
+    
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider).then(function(result){
+    
+    console.log(result)
+    console.log("success.goole Account")
+  })
+  
+  .catch(function(err){
+    console.log(err);
+    console.log("Intento fallido")
+  })
+
 }
