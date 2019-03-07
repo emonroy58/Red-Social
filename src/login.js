@@ -59,7 +59,5 @@ function googleSigIn(){
    // firebase.auth().onAuthStateChanged(newLoginHappened);
   
 
-function app(){
-    document.getElementById('user-name').innerHTML= user.displayName;
-    }
-    window.onload = googleSigIn;
+
+    //window.onload = googleSigIn;

@@ -22,7 +22,9 @@ var mainApp = {};
 
 })() 
 
-
+(function app(){
+  document.getElementById('user-name').innerHTML= user.displayName;
+  })()
 
 
 
