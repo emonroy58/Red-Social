@@ -10,6 +10,7 @@ var mainApp = {};
       if (user) {
         // User is signed in.
         uid=user.uid;
+        document.getElementById('user-name').innerHTML= user.displayName;
       }else{
           uid=null;
           window.location.replace("login.html");
@@ -22,9 +23,6 @@ var mainApp = {};
 
 })() 
 
-(function app(){
-  document.getElementById('user-name').innerHTML= user.displayName;
-  })()
 
 
 
