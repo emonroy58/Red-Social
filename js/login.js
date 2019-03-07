@@ -1,10 +1,11 @@
 /* global firebase : true*/
-//const urlSingUp = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY';
+const urlSingUp = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY';
 
 const emailInput = document.getElementById('email_input');
 const passwordInput = document.getElementById('password');
 const passwordConfirmInput = document.getElementById('confirm_password');
 const sendButton = document.getElementById('send_button');
+const logInButton = document.getElementById('logIn-button');
 
 var config = {
    apiKey: "AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY",
@@ -35,13 +36,15 @@ function checkPasswords(){
  return passwordMatch;
 }
 
-sendButton.addEventListener('click', function () {
-  logIn();
-});
 
-function logIn() {
+
+function singIn() {
   if(checkPasswords()){
     firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
+    .then(function(){
+      checkEmail();
+      location.href='./editprofile.html';
+    })
       .then(function(response) {
         console.log(response);
         //parse json to create a js object
@@ -79,15 +82,25 @@ function logIn() {
 
 
 
-function singIn() {
-  var emailSingIn = document.getElementById('email_sing_in').value;
-  var passwordSingIn = document.getElementById('password_sing_in').value;
+const logIn = () => {
+  const emailSingIn = document.getElementById('email_sing_in').value;
+  const passwordSingIn = document.getElementById('password_sing_in').value;
 
-  firebase.auth().singInWithEmailAndPasword(emailSingIn, passwordSingIn)
+  firebase.auth().signInWithEmailAndPassword(emailSingIn, passwordSingIn)
+  .then(function(){
+      let userSigIn = obtainUser();
+      if(userSigIn.emailVerified){
+        location.href='./editprofile.html';
+      }
+      else {
+        singOut();
+        alert('debes validar tu email')
+      }
+    })
     .catch(function(error) {
       //Handle Erros here.
-      var errorCode = error.code;
-      var errorMessages = error.messages;
+      const errorCode = error.code;
+      const errorMessages = error.messages;
     });
 }
 
@@ -115,11 +128,80 @@ function observer() {
 }
 observer();
 
-// function SingOut() {
-//   firebase.auth().singOut()
-//   .then(function(error){
-//     console.log(Saliendo)
-//   })
-//   .catch((err) => {
-//     console.log(error)
-//   })
+
+
+const checkEmail = () => {
+  var user = firebase.auth().currentUser;
+  user.sendEmailVerification()
+  .then(function() {
+    // Email sent.
+    console.log('Enviando email');
+  }).catch(function(error) {
+    // An error happened.
+    console.log(error);
+  });
+}
+
+const singOut = () => {
+  firebase.auth().signOut()
+  .then(function() {
+    // Sign-out successful.
+    console.log('saliendo...');
+    location.href = './index.html';
+  }).catch(function(error) {
+    // An error happened.
+    console.log(error);
+  });
+}
+
+const obtainUser = () => {
+  let user = firebase.auth().currentUser;
+  let userNew = {};
+
+  if (user != null) {
+    userNew.name = user.displayName;
+    userNew.email = user.email;
+    userNew.photoUrl = user.photoURL;
+    userNew.emailVerified = user.emailVerified;
+    userNew.uid = user.uid;
+  }
+  return userNew;
+}
+
+if(location.href.includes('login.html')){
+  logInButton.addEventListener('click',logIn);
+  sendButton.addEventListener('click', function () {
+    singIn();
+  });
+
+
+}
+
+
+if(location.href.includes('editprofile.html')){
+  const signOutButton = document.getElementById('signOut-button');
+  signOutButton.addEventListener('click', singOut)
+}
+
+
+
+const btnGoogle = document.getElementById('btn-google');
+btnGoogle.addEventListener('click', ()=>{
+  googleSigIn()
+}  );
+
+function googleSigIn(){
+
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider).then(function(result){
+
+    console.log(result)
+    console.log("success.goole Account")
+  })
+
+  .catch(function(err){
+    console.log(err);
+    console.log("Intento fallido")
+  })
+
+}
