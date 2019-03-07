@@ -176,6 +176,10 @@ if(location.href.includes('login.html')){
     singIn();
   });
 
+  const btnGoogle = document.getElementById('btn-google');
+  btnGoogle.addEventListener('click', ()=>{
+  googleSigIn()
+}  );
  
 }
 
@@ -187,10 +191,7 @@ if(location.href.includes('editprofile.html')){
 
 
 
-const btnGoogle = document.getElementById('btn-google');
-btnGoogle.addEventListener('click', ()=>{
-  googleSigIn()
-}  );
+
 
 function googleSigIn(){
     
