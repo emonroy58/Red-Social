@@ -1,5 +1,5 @@
 
-/*(function(){
+(function(){
 
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
     var uiConfig = {
@@ -35,7 +35,7 @@
       };
       ui.start('#firebaseui-auth-container', uiConfig);
 
-})()*/
+})()
 
 function login(){
     function newLoginHappened(user){
@@ -51,6 +51,6 @@ function login(){
   }
 
 function app(){
-    document.getElementById('user-name').innerHTML= "al sitio";
+    document.getElementById('user-name').innerHTML= user.displayName;
     }
     window.onload = login;
