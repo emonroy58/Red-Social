@@ -199,7 +199,7 @@ function googleSigIn(){
     
     console.log(result)
     console.log("success.goole Account")
-    location.href='./editprofile.html'
+    location.href='./editprofile.html';
   })
   
   .catch(function(err){
