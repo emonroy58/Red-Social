@@ -110,6 +110,8 @@ function observer() {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       console.log('hay usuario')
+      document.getElementById('user-name').innerHTML= user.displayName;
+      document.getElementById('cliente-photo').setAttribute("src",user.photoURL);
       // User is signed in.
       var displayName = user.displayName;
       var email = user.email;
@@ -197,6 +199,7 @@ function googleSigIn(){
     
     console.log(result)
     console.log("success.goole Account")
+    location.href='./editprofile.html'
   })
   
   .catch(function(err){
