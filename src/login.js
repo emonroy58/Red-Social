@@ -1,5 +1,5 @@
 
-(function(){
+/*(function(){
 
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
     var uiConfig = {
@@ -21,7 +21,7 @@
         signInSuccessUrl: 'main.html',
         signInOptions: [
           // Leave the lines as is for the providers you want to offer your users.
-         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        // firebase.auth.GoogleAuthProvider.PROVIDER_ID,
           //firebase.auth.FacebookAuthProvider.PROVIDER_ID,
           //firebase.auth.TwitterAuthProvider.PROVIDER_ID,
           //firebase.auth.GithubAuthProvider.PROVIDER_ID,          
@@ -35,4 +35,22 @@
       };
       ui.start('#firebaseui-auth-container', uiConfig);
 
-})()
+})()*/
+
+function login(){
+    function newLoginHappened(user){
+        if (user){
+            app(user);
+        }else{
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithRedirect(provider);
+         }
+  
+    }
+    firebase.auth().onAuthStateChanged(newLoginHappened);
+  }
+
+function app(){
+    document.getElementById('user-name').innerHTML= "al sitio";
+    }
+    window.onload = login;
