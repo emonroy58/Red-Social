@@ -11,6 +11,7 @@ var mainApp = {};
         // User is signed in.
         uid=user.uid;
         document.getElementById('user-name').innerHTML= user.displayName;
+        document.getElementById('cliente-photo').setAttribute("src",user.photoURL);
       }else{
           uid=null;
           window.location.replace("login.html");
