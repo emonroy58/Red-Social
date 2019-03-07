@@ -168,28 +168,6 @@ const obtainUser = () => {
   return userNew;
 }
 
-if(location.href.includes('login.html')){
-  logInButton.addEventListener('click',logIn);
-  sendButton.addEventListener('click', function () {
-    singIn();
-  });
-
-
-}
-
-
-if(location.href.includes('editprofile.html')){
-  const signOutButton = document.getElementById('signOut-button');
-  signOutButton.addEventListener('click', singOut)
-}
-
-
-
-const btnGoogle = document.getElementById('btn-google');
-btnGoogle.addEventListener('click', ()=>{
-  googleSigIn()
-}  );
-
 function googleSigIn(){
 
   var provider = new firebase.auth.GoogleAuthProvider();
@@ -197,6 +175,7 @@ function googleSigIn(){
 
     console.log(result)
     console.log("success.goole Account")
+    location.href = './editprofile.html';
   })
 
   .catch(function(err){
@@ -204,4 +183,20 @@ function googleSigIn(){
     console.log("Intento fallido")
   })
 
+}
+
+if(location.href.includes('login.html')){
+  logInButton.addEventListener('click',logIn);
+  sendButton.addEventListener('click', function () {
+    singIn();
+  });
+
+  const btnGoogle = document.getElementById('btn-google');
+  btnGoogle.addEventListener('click', ()=>{
+    googleSigIn()
+  }  );
+}
+else if(location.href.includes('editprofile.html')){
+  const signOutButton = document.getElementById('signOut-button');
+  signOutButton.addEventListener('click', singOut)
 }
