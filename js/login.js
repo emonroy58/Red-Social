@@ -1,5 +1,5 @@
 /* global firebase : true*/
-const urlSingUp = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY';
+//const urlSingUp = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY';
 
 const emailInput = document.getElementById('email_input');
 const passwordInput = document.getElementById('password');
@@ -88,7 +88,7 @@ function singIn() {
       //Handle Erros here.
       var errorCode = error.code;
       var errorMessages = error.messages;
-    })
+    });
 }
 
 //var provider = new firebase.auth.GoogleAuthProvider();
