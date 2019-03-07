@@ -62,4 +62,4 @@ function googleSigIn(){
 function app(){
     document.getElementById('user-name').innerHTML= user.displayName;
     }
-    window.onload = login;
+    window.onload = googleSigIn;
