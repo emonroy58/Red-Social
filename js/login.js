@@ -170,7 +170,10 @@ const obtainUser = () => {
   return userNew;
 }
 
-
+const btnGoogle = document.getElementById('btn-google');
+btnGoogle.addEventListener('click', ()=>{
+  googleSigIn()
+}  );
 
 function googleSigIn(){
 
@@ -198,10 +201,7 @@ if(location.href.includes('login.html')){
   });
 
 
-  const btnGoogle = document.getElementById('btn-google');
-  btnGoogle.addEventListener('click', ()=>{
-    googleSigIn()
-  }  );
+ 
 
   
 }
