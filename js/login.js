@@ -47,23 +47,23 @@ function singIn() {
       checkEmail();
       location.href='./editprofile.html';
     })
-      // .then(function(response) {
-      //   console.log(response);
-      //   //parse json to create a js object
-      //   resposne = response.json;
-      //   //get a user object inside the response object
-      //   const user = response.user;
-      //   //Save the data for the current User
-      //   let userData = {
-      //     id: user.uid,
-      //     email: user.email,
-      //   }
-      //
-      //
-      //
-      //   //Move to the next page
-      //
-      // })
+      .then(function(response) {
+        console.log(response);
+        //parse json to create a js object
+        resposne = response.json;
+        //get a user object inside the response object
+        const user = response.user;
+        //Save the data for the current User
+        let userData = {
+          id: user.uid,
+          email: user.email,
+        }
+
+
+
+        //Move to the next page
+
+      })
       .catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
