@@ -6,6 +6,10 @@ const passwordInput = document.getElementById('password');
 const passwordConfirmInput = document.getElementById('confirm_password');
 const sendButton = document.getElementById('send_button');
 const logInButton = document.getElementById('logIn-button');
+const buttonsSection = document.getElementById('buttons-section');
+const registerSection = document.getElementById('register-section');
+const loginSection = document.getElementById('login-section');
+const emailButton = document.getElementById('btn-email');
 
 console.log('createa a page');
 
@@ -43,14 +47,20 @@ function checkPasswords(){
 function singIn() {
   if(checkPasswords()){
     firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
-    .then(function(){
-      checkEmail();
+    .then(function(result){
+      console.log('linea 48')
+      console.log(result)
+
       location.href='./editprofile.html';
+        result = checkEmail()
+
+       return result
+
     })
       .then(function(response) {
         console.log(response);
         //parse json to create a js object
-        resposne = response.json;
+        response = response.json;
         //get a user object inside the response object
         const user = response.user;
         //Save the data for the current User
@@ -113,8 +123,10 @@ const logIn = () => {
 
 
 const checkEmail = () => {
+  console.log('mail ennviado')
   var user = firebase.auth().currentUser;
   user.sendEmailVerification()
+  console.log(user)
   .then(function() {
     // Email sent.
     console.log('Enviando email');
@@ -157,12 +169,37 @@ function googleSigIn(){
 
 }
 
-logInButton.addEventListener('click',logIn);
-sendButton.addEventListener('click', function () {
-  singIn();
-});
+const hiddenSections = () => {
+    registerSection.style.display = "none";
+    loginSection.style.display = "none";
+}
 
-const btnGoogle = document.getElementById('btn-google');
-btnGoogle.addEventListener('click', ()=>{
-  googleSigIn()
-}  );
+const validateOption = ()=>{
+  if (localStorage.option === 'signup') {
+    registerSection.style.display = 'block';
+    loginSection.style.display = "none";
+  }
+  else if (localStorage.option === 'login') {
+    registerSection.style.display = 'none';
+    loginSection.style.display = "block";
+  }
+}
+
+if(location.href.includes('login.html')){
+  hiddenSections();
+
+  logInButton.addEventListener('click',logIn);
+  sendButton.addEventListener('click', function () {
+    singIn();
+  });
+
+  const btnGoogle = document.getElementById('btn-google');
+  btnGoogle.addEventListener('click', ()=>{
+    googleSigIn()
+  }  );
+  emailButton.addEventListener('click', validateOption);
+}
+else if(location.href.includes('editprofile.html')){
+  const signOutButton = document.getElementById('signOut-button');
+  signOutButton.addEventListener('click', singOut)
+}
