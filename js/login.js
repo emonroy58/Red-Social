@@ -1,5 +1,5 @@
 /* global firebase : true*/
-const urlSingUp = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY';
+//const urlSingUp = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY';
 
 const emailInput = document.getElementById('email_input');
 const passwordInput = document.getElementById('password');
@@ -10,6 +10,8 @@ const buttonsSection = document.getElementById('buttons-section');
 const registerSection = document.getElementById('register-section');
 const loginSection = document.getElementById('login-section');
 const emailButton = document.getElementById('btn-email');
+
+console.log('createa a page');
 
 var config = {
    apiKey: "AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY",
@@ -116,29 +118,7 @@ const logIn = () => {
 
 //var provider = new firebase.auth.GoogleAuthProvider();
 
-function observer() {
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      console.log('hay usuario')
-      document.getElementById('user-name').innerHTML= user.displayName;
-      document.getElementById('cliente-photo').setAttribute("src",user.photoURL);
-      // User is signed in.
-      var displayName = user.displayName;
-      var email = user.email;
-      var emailVerified = user.emailVerified;
-      var photoURL = user.photoURL;
-      var isAnonymous = user.isAnonymous;
-      var uid = user.uid;
-      var providerData = user.providerData;
-      // ...
-    } else {
-      // User is signed out.
-      console.log('no hay usuario')
-      // ...
-    }
-  });
-}
-observer();
+
 
 
 
@@ -150,18 +130,6 @@ const checkEmail = () => {
   .then(function() {
     // Email sent.
     console.log('Enviando email');
-  }).catch(function(error) {
-    // An error happened.
-    console.log(error);
-  });
-}
-
-const singOut = () => {
-  firebase.auth().signOut()
-  .then(function() {
-    // Sign-out successful.
-    console.log('saliendo...');
-    location.href = './index.html';
   }).catch(function(error) {
     // An error happened.
     console.log(error);
