@@ -6,6 +6,10 @@ const passwordInput = document.getElementById('password');
 const passwordConfirmInput = document.getElementById('confirm_password');
 const sendButton = document.getElementById('send_button');
 const logInButton = document.getElementById('logIn-button');
+const buttonsSection = document.getElementById('buttons-section');
+const registerSection = document.getElementById('register-section');
+const loginSection = document.getElementById('login-section');
+const emailButton = document.getElementById('btn-email');
 
 var config = {
    apiKey: "AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY",
@@ -189,7 +193,25 @@ function googleSigIn(){
 
 }
 
+const hiddenSections = () => {
+    registerSection.style.display = "none";
+    loginSection.style.display = "none";
+}
+
+const validateOption = ()=>{
+  if (localStorage.option === 'signup') {
+    registerSection.style.display = 'block';
+    loginSection.style.display = "none";
+  }
+  else if (localStorage.option === 'login') {
+    registerSection.style.display = 'none';
+    loginSection.style.display = "block";
+  }
+}
+
 if(location.href.includes('login.html')){
+  hiddenSections();
+
   logInButton.addEventListener('click',logIn);
   sendButton.addEventListener('click', function () {
     singIn();
@@ -199,6 +221,7 @@ if(location.href.includes('login.html')){
   btnGoogle.addEventListener('click', ()=>{
     googleSigIn()
   }  );
+  emailButton.addEventListener('click', validateOption);
 }
 else if(location.href.includes('editprofile.html')){
   const signOutButton = document.getElementById('signOut-button');
