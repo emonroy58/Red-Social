@@ -170,7 +170,6 @@ const obtainUser = () => {
   return userNew;
 }
 
-
 const btnGoogle = document.getElementById('btn-google');
   btnGoogle.addEventListener('click', ()=>{
     googleSigIn()
