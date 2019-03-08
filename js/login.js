@@ -110,7 +110,7 @@ function observer() {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       console.log('hay usuario')
-      document.getElementById('user-name').innerHTML= user.displayName;
+      document.getElementById('user-name').innerHTML= `${user.displayName}`;
       document.getElementById('cliente-photo').setAttribute("src",user.photoURL);
       // User is signed in.
       var displayName = user.displayName;
@@ -170,7 +170,10 @@ const obtainUser = () => {
   return userNew;
 }
 
-
+const btnGoogle = document.getElementById('btn-google');
+  btnGoogle.addEventListener('click', ()=>{
+    googleSigIn()
+  }  );
 
 function googleSigIn(){
 
@@ -197,10 +200,7 @@ if(location.href.includes('login.html')){
     singIn();
   });
 
-  const btnGoogle = document.getElementById('btn-google');
-  btnGoogle.addEventListener('click', ()=>{
-    googleSigIn()
-  }  );
+  
 }
 else if(location.href.includes('editprofile.html')){
   const signOutButton = document.getElementById('signOut-button');

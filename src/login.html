@@ -4,8 +4,9 @@
 <head>
   <meta charset="utf-8">
   <title>Red social</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheel" href="../css/index.css">
+  <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-auth.js"></script>
 </head>
@@ -17,9 +18,9 @@
             <div class="form-inline">
                 <input id="email_sing_in" name="yourEmail" value=""  class="form-control form-control-sm mr-sm-2" type="email" placeholder="Email">
                 <input id="password_sing_in"   class="form-control form-control-sm mr-sm-2" type="password" placeholder="Password">
-                <button id="logIn-button" class="btn  btn-secondary btn-sm" >Entrar</button>
+                <button id="logIn-button" class="btn-primary btn-sm" >Entrar</button>
                 <button class="btn btn-danger ml-2 btn-sm" type="button" data-toggle="modal" data-target="#exampleModal">Registrar</button>
-                <button class="btn btn-light btm-outline-secondary ml-2 btn-sm" type="submit" name="button"><a href="index.html">Regresar</a></button>
+                <button class="btn btn-outline-light ml-2" name="button"><a href="index.html"><i class="fas fa-bars"></i></a></button>
             </div>
           </nav>
     </section>
@@ -44,38 +45,20 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button id="send_button" type="button" class="btn btn-primary">Registrar</button>
+          <button id="send_button" type="button" name="button" class="btn btn-primary">Registrar</button>
         </div>
       </div>
     </div>
   </div>
 
+<div class="mt-4"></div>
+<section class="d-flex justify-content-center">    
+  <button id= "btn-google" class=" btn btn-light ">
+  <span class="icon-google"><img class="icon-google" alt="" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"></span>
+  <span class="text-long">Sign in with Google</span>
+  </button>  
+</section>
 
-
-
-  <!-- <section>
-    <h3>Registro de usuarios educacion</h3>
-
-      <label for="">Email</label><br>
-      <input type="email" name="yourEmail" id="email_input"><br>
-      <label for="">contraseña</label><br>
-      <input type="password" id="password"><br>
-      <label for="">confirmar contraseña</label><br>
-      <input type="password" id="confirm_password"><br>
-      <br>
-      <button type="button" name="button" id="send_button">Registrar</button>
-
-      <h3>Accede a tu cuenta</h3>
-        <label for="">Email</label><br>
-      <input type="email" name="yourEmail" value="" id="email_sing_in"><br>
-      <label for="">contraseña</label><br>
-      <input type="password" id="password_sing_in"><br>
-      </br>
-      <button id="logIn-button" >Entrar</button>      
-
-  </section> -->
-
-  <button id="btn-google">Google</button>
 
 </body>
 <script type="text/javascript" src="../js/login.js"></script>
