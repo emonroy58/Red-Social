@@ -170,6 +170,8 @@ const obtainUser = () => {
   return userNew;
 }
 
+
+
 function googleSigIn(){
 
   var provider = new firebase.auth.GoogleAuthProvider();

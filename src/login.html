@@ -11,14 +11,49 @@
 </head>
 
 <body>
-  <nav class="navbar form-inline bg-primary">
-    <a class="navbar-brand"><img src="" class="d-inline-block align-top">EDULAB</a>
-    <form class="form-inline" action="index.html" method="post">
-      <button class="btn btn-light btm-outline-secondary" type="submit" name="button"><a href="index.html">Regresar</a></button>
-    </form>
-    </nav>
+    <section id="contenedor">
+        <nav class="navbar navbar navbar-dark bg-primary">
+            <a class="navbar-brand">EDULAB</a>
+            <div class="form-inline">
+                <input id="email_sing_in" name="yourEmail" value=""  class="form-control form-control-sm mr-sm-2" type="email" placeholder="Email">
+                <input id="password_sing_in"   class="form-control form-control-sm mr-sm-2" type="password" placeholder="Password">
+                <button id="logIn-button" class="btn  btn-secondary btn-sm" >Entrar</button>
+                <button class="btn btn-danger ml-2 btn-sm" type="button" data-toggle="modal" data-target="#exampleModal">Registrar</button>
+                <button class="btn btn-light btm-outline-secondary ml-2 btn-sm" type="submit" name="button"><a href="index.html">Regresar</a></button>
+            </div>
+          </nav>
+    </section>
+    
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Resgistro Nuevo Usuario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <input id="email_input" type="email" name="yourEmail"  class="form-control" placeholder="Email">
+            <div class="mt-2"></div>
+            <input id="password"  type="password"  class="form-control" placeholder="Password">
+            <div class="mt-2"></div>
+            <input id="confirm_password" type="password"  class="form-control" placeholder="Confirm Password">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button id="send_button" type="button" class="btn btn-primary">Registrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <section>
+
+
+
+  <!-- <section>
     <h3>Registro de usuarios educacion</h3>
 
       <label for="">Email</label><br>
@@ -30,16 +65,15 @@
       <br>
       <button type="button" name="button" id="send_button">Registrar</button>
 
-
-    <h3>Accede a tu cuenta</h3>
+      <h3>Accede a tu cuenta</h3>
         <label for="">Email</label><br>
       <input type="email" name="yourEmail" value="" id="email_sing_in"><br>
       <label for="">contraseña</label><br>
       <input type="password" id="password_sing_in"><br>
       </br>
-      <button id="logIn-button" >Entrar</button>
+      <button id="logIn-button" >Entrar</button>      
 
-  </section>
+  </section> -->
 
   <button id="btn-google">Google</button>
 
