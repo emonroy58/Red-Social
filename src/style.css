@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+.circle{
+    border-radius: 50%
+    
+}
+
+.bg-primary {
+    background-color: #7f97b5!important;
+}
+
+
+img.icon-google {
+    box-shadow: 0 0 black;
+    width: 20px;
+}
+
+#cliente-photo{
+    box-shadow: 0px 3px 0px #dde4e4;
+    width: 70px;
+    height: 70px;
+}
+
+#btn-google{
+    width: 400px;
+    box-shadow: 0px 3px 0px #dde4e4;
+}
+
+#contenedor{
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+#txt-user{
+font-size: 10px;
+}
