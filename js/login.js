@@ -170,41 +170,39 @@ const obtainUser = () => {
   return userNew;
 }
 
+
+
+function googleSigIn(){
+
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider).then(function(result){
+
+    console.log(result)
+    console.log("success.goole Account")
+
+    location.href='./editprofile.html';
+
+  })
+
+  .catch(function(err){
+    console.log(err);
+    console.log("Intento fallido")
+  })
+
+}
+
 if(location.href.includes('login.html')){
   logInButton.addEventListener('click',logIn);
   sendButton.addEventListener('click', function () {
     singIn();
   });
 
- 
+  const btnGoogle = document.getElementById('btn-google');
+  btnGoogle.addEventListener('click', ()=>{
+    googleSigIn()
+  }  );
 }
-
-
-if(location.href.includes('editprofile.html')){
+else if(location.href.includes('editprofile.html')){
   const signOutButton = document.getElementById('signOut-button');
   signOutButton.addEventListener('click', singOut)
-}
-
-
-
-const btnGoogle = document.getElementById('btn-google');
-btnGoogle.addEventListener('click', ()=>{
-googleSigIn()
-}  );
-
-function googleSigIn(){
-    
-  var provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider).then(function(result){
-    
-    console.log(result)
-    console.log("success.goole Account")
-    location.href='./editprofile.html';
-  })
-  
-  .catch(function(err){
-    console.log(err);
-    console.log("Intento fallido")
-  })
-
 }
