@@ -45,14 +45,20 @@ function checkPasswords(){
 function singIn() {
   if(checkPasswords()){
     firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
-    .then(function(){
-      checkEmail();
+    .then(function(result){
+      console.log('linea 48')
+      console.log(result)
+
       location.href='./editprofile.html';
+        result = checkEmail()
+
+       return result
+
     })
       .then(function(response) {
         console.log(response);
         //parse json to create a js object
-        resposne = response.json;
+        response = response.json;
         //get a user object inside the response object
         const user = response.user;
         //Save the data for the current User
@@ -137,8 +143,10 @@ observer();
 
 
 const checkEmail = () => {
+  console.log('mail ennviado')
   var user = firebase.auth().currentUser;
   user.sendEmailVerification()
+  console.log(user)
   .then(function() {
     // Email sent.
     console.log('Enviando email');
