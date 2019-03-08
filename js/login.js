@@ -155,6 +155,9 @@ const singOut = () => {
     console.log(error);
   });
 }
+const signOutButton= document.getElementById('signOut-button');
+signOutButton.addEventListener('click',singOut);
+
 
 const obtainUser = () => {
   let user = firebase.auth().currentUser;
