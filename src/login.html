@@ -11,33 +11,58 @@
 </head>
 
 <body>
-  <nav class="navbar form-inline bg-primary">
-    <a class="navbar-brand"><img src="" class="d-inline-block align-top">EDULAB</a>
-    <form class="form-inline" action="index.html" method="post">
-      <button class="btn btn-light btm-outline-secondary" type="submit" name="button"><a href="index.html">Regresar</a></button>
-    </form>
+  <header>
+    <nav class="navbar navbar-light bg-primary">
+      <a class="navbar-brand" href="#">
+        <!-- <img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt=""> -->
+        EDULAB
+      </a>
+      <div class="form-inline" action="index.html" method="post">
+        <button class="btn btn-light btm-outline-secondary" type="submit" name="button"><a href="index.html">Regresar</a></button>
+      </div>
     </nav>
+  </header>
+
+  <div>
+    <h3>Registro de usuarios educacion</h3>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" class="form-control" name="yourEmail" id="email_input" aria-describedby="emailHelp" placeholder="Enter email">
+      <small id="emailHelp" class="form-text text-muted">Nunca compartiremos tu email con terceros.</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Contraseña</label>
+      <input type="password" class="form-control" id="password" placeholder="Password">
+      <label for="exampleInputPassword1">Confirmar contraseña</label>
+      <input type="password" class="form-control" id="confirm_password" placeholder="Password">
+    </div>
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+      <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div>
+    <button type="submit" class="btn btn-primary" name="button" id="send_button">Registrar</button>
+  </div>
 
   <section>
-    <h3>Registro de usuarios educacion</h3>
+    <!-- <h3>Registro de usuarios educacion</h3>
 
-      <label for="">Email</label><br>
-      <input type="email" name="yourEmail" id="email_input"><br>
-      <label for="">contraseña</label><br>
-      <input type="password" id="password"><br>
-      <label for="">confirmar contraseña</label><br>
-      <input type="password" id="confirm_password"><br>
-      <br>
-      <button type="button" name="button" id="send_button">Registrar</button>
-
+    <label for="">Email</label><br>
+    <input type="email" name="yourEmail" id="email_input"><br>
+    <label for="">contraseña</label><br>
+    <input type="password" id="password"><br>
+    <label for="">confirmar contraseña</label><br>
+    <input type="password" id="confirm_password"><br>
+    <br>
+    <button type="button" name="button" id="send_button">Registrar</button>
+ -->
 
     <h3>Accede a tu cuenta</h3>
-        <label for="">Email</label><br>
-      <input type="email" name="yourEmail" value="" id="email_sing_in"><br>
-      <label for="">contraseña</label><br>
-      <input type="password" id="password_sing_in"><br>
-      </br>
-      <button id="logIn-button" >Entrar</button>
+    <label for="">Email</label><br>
+    <input type="email" name="yourEmail" value="" id="email_sing_in"><br>
+    <label for="">contraseña</label><br>
+    <input type="password" id="password_sing_in"><br>
+    </br>
+    <button id="logIn-button">Entrar</button>
 
   </section>
 
