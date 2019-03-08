@@ -1,11 +1,13 @@
 /* global firebase : true*/
-const urlSingUp = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY';
+//const urlSingUp = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY';
 
 const emailInput = document.getElementById('email_input');
 const passwordInput = document.getElementById('password');
 const passwordConfirmInput = document.getElementById('confirm_password');
 const sendButton = document.getElementById('send_button');
 const logInButton = document.getElementById('logIn-button');
+
+console.log('createa a page');
 
 var config = {
    apiKey: "AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY",
@@ -106,29 +108,7 @@ const logIn = () => {
 
 //var provider = new firebase.auth.GoogleAuthProvider();
 
-function observer() {
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      console.log('hay usuario')
-      document.getElementById('user-name').innerHTML= user.displayName;
-      document.getElementById('cliente-photo').setAttribute("src",user.photoURL);
-      // User is signed in.
-      var displayName = user.displayName;
-      var email = user.email;
-      var emailVerified = user.emailVerified;
-      var photoURL = user.photoURL;
-      var isAnonymous = user.isAnonymous;
-      var uid = user.uid;
-      var providerData = user.providerData;
-      // ...
-    } else {
-      // User is signed out.
-      console.log('no hay usuario')
-      // ...
-    }
-  });
-}
-observer();
+
 
 
 
@@ -138,18 +118,6 @@ const checkEmail = () => {
   .then(function() {
     // Email sent.
     console.log('Enviando email');
-  }).catch(function(error) {
-    // An error happened.
-    console.log(error);
-  });
-}
-
-const singOut = () => {
-  firebase.auth().signOut()
-  .then(function() {
-    // Sign-out successful.
-    console.log('saliendo...');
-    location.href = './index.html';
   }).catch(function(error) {
     // An error happened.
     console.log(error);
@@ -189,18 +157,12 @@ function googleSigIn(){
 
 }
 
-if(location.href.includes('login.html')){
-  logInButton.addEventListener('click',logIn);
-  sendButton.addEventListener('click', function () {
-    singIn();
-  });
+logInButton.addEventListener('click',logIn);
+sendButton.addEventListener('click', function () {
+  singIn();
+});
 
-  const btnGoogle = document.getElementById('btn-google');
-  btnGoogle.addEventListener('click', ()=>{
-    googleSigIn()
-  }  );
-}
-else if(location.href.includes('editprofile.html')){
-  const signOutButton = document.getElementById('signOut-button');
-  signOutButton.addEventListener('click', singOut)
-}
+const btnGoogle = document.getElementById('btn-google');
+btnGoogle.addEventListener('click', ()=>{
+  googleSigIn()
+}  );
