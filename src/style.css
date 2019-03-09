@@ -26,19 +26,19 @@ img.icon-google {
 
 #cliente-photo{
     box-shadow: 0px 3px 0px #dde4e4;
-    width: 150px;
-    height: auto;
+    width: 250px;
+   
 }
 
 #btn-google{
     width: 400px;
     box-shadow: 0px 3px 0px #dde4e4;
-    padding-top: 350px
+   
 }
 
 #btn-google, #buttons-section{
     width: 400px;
-    padding-top: 250px
+    
 }
 
 
