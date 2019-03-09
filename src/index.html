@@ -6,23 +6,59 @@
   <title>Red social</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheel" href="../css/index.css">
+  <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
+ <section id="contenedor">
   <header>
     <nav class="navbar form-inline bg-primary">
       <a class="navbar-brand"><img src="" class="d-inline-block align-top">EDULAB</a>
       <form class="form-inline" action="index.html" method="post">
-        <button id="signup-button" class="btn btn-light btm-outline-secondary btn-sm ml-2" type="button">Registrarse</button>
-        <button id="login-button" class="btn btn-light btm-outline-secondary btn-sm ml-2" type="button">Ingresar</button>
+       <!--<button id="signup-button" class="btn btn-light btm-outline-secondary btn-sm" type="button">Registrarse</button>-->
+       <button id="login-button" class="btn btn-light btm-outline-secondary btn-sm ml-2" type="button">Ingresar</button>
+       <button class="btn btn-danger ml-2 btn-sm" type="button" data-toggle="modal" data-target="#exampleModal">Registrar</button>
+       
       </form>
     </nav>
   </header>
+ </section>
+
+  <section id="txt-user" class="d-flex justify-content-center mt-2">
+      <h1><span >Bienvenid@</span></h1><br>
+              
+  </section>
+  <div class="d-flex justify-content-center mt-2"><h4>Ingresa la Red social o bien te invitamos a realizar tu registro</h4></div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Resgistro Nuevo Usuario</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <input id="email_input" type="email" name="yourEmail"  class="form-control" placeholder="Email">
+              <div class="mt-2"></div>
+              <input id="password"  type="password"  class="form-control" placeholder="Password">
+              <div class="mt-2"></div>
+              <input id="confirm_password" type="password"  class="form-control" placeholder="Confirm Password">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button id="send_button" type="button" name="button" class="btn btn-primary">Registrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
   <script type="text/javascript" src="../js/index.js"></script>
-
+  <script type="text/javascript" src="../js/login.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
