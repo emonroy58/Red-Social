@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Red social</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -12,53 +13,64 @@
 </head>
 
 <body>
-    <section id="contenedor">
-        <nav class="navbar navbar navbar-dark bg-primary">
-            <a class="navbar-brand">EDULAB</a>
-            <div class="form-inline">
-                <input id="email_sing_in" name="yourEmail" value=""  class="form-control form-control-sm mr-sm-2" type="email" placeholder="Email">
-                <input id="password_sing_in"   class="form-control form-control-sm mr-sm-2" type="password" placeholder="Password">
-                <button id="logIn-button" class="btn-primary btn-sm" >Entrar</button>
-                <button class="btn btn-danger ml-2 btn-sm" type="button" data-toggle="modal" data-target="#exampleModal">Registrar</button>
-                <button class="btn btn-outline-light ml-2" name="button"><a href="index.html"><i class="fas fa-bars"></i></a></button>
-            </div>
-          </nav>
-    </section>
-    
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Resgistro Nuevo Usuario</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <input id="email_input" type="email" name="yourEmail"  class="form-control" placeholder="Email">
-            <div class="mt-2"></div>
-            <input id="password"  type="password"  class="form-control" placeholder="Password">
-            <div class="mt-2"></div>
-            <input id="confirm_password" type="password"  class="form-control" placeholder="Confirm Password">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button id="send_button" type="button" name="button" class="btn btn-primary">Registrar</button>
-        </div>
+  <section id="contenedor">
+    <header>
+      <nav class="navbar form-inline bg-primary">
+          <button class="btn btn-outline-light ml-2" name="button"><a href="index.html"><i class="fas fa-bars"></i></a></button>
+        <a class="navbar-brand"><img src="" class="d-inline-block align-top">EDULAB</a>
+        <form class="form-inline" action="index.html" method="post">
+          <button class="btn btn-light btm-outline-secondary btn-sm ml-2" type="button"><a href="index.html">Regresar</a></button>
+        </form>
+      </nav>
+    </header>
+  </section>
+
+
+  <section id="buttons-section" class="container mt-3">
+     <button id="btn-email" type="button" class="btn btn-outline-secondary btn-block">Con correo electrónico</button>
+  </section>
+
+  <!--
+<section id="register-section" class=" container egister-margin hidden">
+    <h5>Registrate aqui</h5>
+    <form>
+      <div class="form-group">
+        <label for="">Email</label>
+        <input type="email" class="form-control" name="yourEmail" id="email_input">
       </div>
-    </div>
-  </div>
+      <div class="form-group">
+        <label for="">contraseña</label>
+        <input type="password" class="form-control" id="password">
+      </div>
+      <div class="form-group">
+        <label for="">confirmar contraseña</label>
+        <input type="password" class="form-control" id="confirm_password">
+      </div>
+      <button type="button" class="btn btn-success" id="send_button">Registrar</button>
+    </form>
+  </section>
+  -->
 
-<div class="mt-4"></div>
-<section class="d-flex justify-content-center">    
-  <button id= "btn-google" class=" btn btn-light ">
-  <span class="icon-google"><img class="icon-google" alt="" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"></span>
-  <span class="text-long">Sign in with Google</span>
-  </button>  
-</section>
+  <section id="login-section" class="container egister-margin hidden mt-2">
+    <h5>Accede a tu cuenta</h5>
+    <form>
+      <div class="form-group">
+        <input id="email_sing_in" name="yourEmail" value=""  class="form-control form-control-sm mr-sm-2" type="email" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <input id="password_sing_in"   class="form-control form-control-sm mr-sm-2" type="password" placeholder="Contraseña">
+      </div>
+      <button id="logIn-button" type="button" class="btn-primary btn-sm">Entrar</button>
+    </form>
+  </section>
 
+  <div class="mt-4"></div>
+  <section class="d-flex justify-content-center">    
+    <button id= "btn-google" class=" btn btn-light ">
+    <span class="icon-google"><img class="icon-google" alt="" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"></span>
+    <span class="text-long">Sign in with Google</span>
+    </button>  
+  </section>
 
 </body>
 <script type="text/javascript" src="../js/login.js"></script>
