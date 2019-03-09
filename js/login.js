@@ -95,8 +95,8 @@ function singIn() {
 
 
 const logIn = () => {
-  const emailSingIn = document.getElementById('email_sing_in').value;
-  const passwordSingIn = document.getElementById('password_sing_in').value;
+  //const emailSingIn = document.getElementById('email_sing_in').value;
+  //const passwordSingIn = document.getElementById('password_sing_in').value;
 
   firebase.auth().signInWithEmailAndPassword(emailSingIn, passwordSingIn)
   .then(function(){
