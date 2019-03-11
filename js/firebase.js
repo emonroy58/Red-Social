@@ -8,8 +8,6 @@
  };
  firebase.initializeApp(config);*/
 
-
-
  var config = {
   apiKey: "AIzaSyBeFIq9ksUbm69E6PUlNwU4EDJfNCEI6Bg",
   authDomain: "usersocial-7cdd3.firebaseapp.com",
@@ -19,6 +17,7 @@
   messagingSenderId: "654921770394"
 };
 firebase.initializeApp(config);
+
 
 
 // Initialize Cloud Firestore through Firebase
