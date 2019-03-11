@@ -64,7 +64,7 @@ editButton.addEventListener('click', function () {
 
  /*Uso de la BD*/
  console.log('agregado')
- var db = firebase.firestore();
+ //var db = firebase.firestore();
 
  db.collection("users").add({
   first: "Ada",

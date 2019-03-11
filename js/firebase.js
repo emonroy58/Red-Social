@@ -19,6 +19,12 @@
 firebase.initializeApp(config);
 
 
+firebase.initializeApp({
+  apiKey: "AIzaSyBeFIq9ksUbm69E6PUlNwU4EDJfNCEI6Bg",
+  authDomain: "usersocial-7cdd3.firebaseapp.com",
+  projectId: "usersocial-7cdd3"
+});
 
 // Initialize Cloud Firestore through Firebase
+var db = firebase.firestore();
 var db = firebase.firestore();
