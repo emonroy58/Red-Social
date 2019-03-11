@@ -13,16 +13,6 @@ const emailButton = document.getElementById('btn-email');
 
 console.log('createa a page');
 
-var config = {
-   apiKey: "AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY",
-   authDomain: "redsocial-501ac.firebaseapp.com",
-   databaseURL: "https://redsocial-501ac.firebaseio.com",
-   projectId: "redsocial-501ac",
-   storageBucket: "redsocial-501ac.appspot.com",
-   messagingSenderId: "246552558120"
- };
- firebase.initializeApp(config);
-
 function checkPasswords(){
  let pass = passwordInput.value;
  let confirmPass = passwordConfirmInput.value;
@@ -95,8 +85,8 @@ function singIn() {
 
 
 const logIn = () => {
-  //const emailSingIn = document.getElementById('email_sing_in').value;
-  //const passwordSingIn = document.getElementById('password_sing_in').value;
+  const emailSingIn = document.getElementById('email_sing_in').value;
+  const passwordSingIn = document.getElementById('password_sing_in').value;
 
   firebase.auth().signInWithEmailAndPassword(emailSingIn, passwordSingIn)
   .then(function(){
