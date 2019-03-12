@@ -2,6 +2,7 @@
 const editButton = document.getElementById('edit_button');
 const userNameField = document.getElementById('user-name');
 let isEditable = false;
+let nameUser;
 
  function observer() {
    firebase.auth().onAuthStateChanged(function(user) {
@@ -17,8 +18,9 @@ let isEditable = false;
        if(user.photoURL != null){
           photoURL = user.photoURL;
        }
-
-       userNameField.value = displayName;
+      nameUser = document.getElementById('user-name');
+      nameUser.innerHTML= user.displayName;
+      userNameField.value = displayName;
        document.getElementById('cliente-photo').setAttribute("src",photoURL);
      }
    });
@@ -62,18 +64,28 @@ editButton.addEventListener('click', function () {
  signOutButton.addEventListener('click', singOut)
 
 
- /*Uso de la BD*/
+ /*agregar datos en BD*/
 
- var db = firebase.firestore();
+ //var db = firebase.firestore();
+let btnpublicar = document.getElementById('btn-publicar');
 
- db.collection("bdpost").add({
-  post: "Primer post",
-  updatepost: "update",
-  deletepost: "delete"
-})
-.then(function(docRef) {
-  console.log("Document written with ID: ", docRef.id);
-})
-.catch(function(error) {
-  console.error("Error adding document: ", error);
-});
+function publicar(){
+  let userName = document.getElementById('user-name').value;
+  let postuser = document.getElementById('post-user').value;
+  db.collection("bdpost").add({ // agregar colleccion bdpost, con sus respectivos campos
+    user: userName,
+    post: postuser,
+    //updatepost: "update",      
+    //deletepost: "delete"
+  })
+  .then(function(docRef) { //then, indica que se agrego correctamente
+    console.log("Document written with ID: ", docRef.id); 
+    userName = document.getElementById('user-name').value='';
+    postuser = document.getElementById('post-user').value='';
+  })
+  .catch(function(error) {
+    console.error("Error adding document: ", error);
+  });
+ }
+ btnpublicar.addEventListener('click', publicar)
+ 
