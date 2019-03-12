@@ -18,9 +18,9 @@ let nameUser;
        if(user.photoURL != null){
           photoURL = user.photoURL;
        }
-      nameUser = document.getElementById('user-name');
-      nameUser.innerHTML= user.displayName;
+     
       userNameField.value = displayName;
+      nameUser = displayName;
        document.getElementById('cliente-photo').setAttribute("src",photoURL);
      }
    });
