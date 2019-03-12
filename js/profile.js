@@ -67,18 +67,19 @@ editButton.addEventListener('click', function () {
  /*agregar datos en BD*/
 let d = new Date(); //obtener fecha
 let fecha =  d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
+let fechaPost = document.getElementById('fecha');
+fechaPost.innerHTML = fecha;
 
  //var db = firebase.firestore();
 let btnpublicar = document.getElementById('btn-publicar');
 
 function publicar(){
   let userName = document.getElementById('user-name').value;
-  let postuser = document.getElementById('post-user').value;
-  document.getElementById('fecha').innerHTML = fecha;
+  let postuser = document.getElementById('post-user').value; 
+  
   db.collection("bdpost").add({ // agregar colleccion bdpost, con sus respectivos campos
     user: userName,
-    post: postuser,
-    fechapost: fecha,
+    post: postuser
     //updatepost: "update",      
     //deletepost: "delete"
   })
@@ -86,7 +87,6 @@ function publicar(){
     console.log("Document written with ID: ", docRef.id); 
     userName = document.getElementById('user-name').value='';
     postUser = document.getElementById('post-user').value='';
-    fechaPost =  document.getElementById('fecha').value;
   })
   .catch(function(error) {
     console.error("Error adding document: ", error);
@@ -103,14 +103,14 @@ function publicar(){
   querySnapshot.forEach((doc) => {
       console.log(`${doc.id} => ${doc.data().user}`);
      dataCard +=`
-      <div class="card-body">
-      <h5 class="card-title">Publicacion de...${doc.data().user}</h5>
-      <p class="card-text">${doc.data().postUser}</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
-    <div class="card-footer text-muted">
-      <h4><span id="fecha">${doc.data().fechaPost}</span></h4>
-    </div>
+     <div class="card-body">
+        <h5 class="card-title">Publicacion de..</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+      <div class="card-footer text-muted">
+          <h4><span id="fecha"></span></h4>
+      </div>
       `
   });
 });
