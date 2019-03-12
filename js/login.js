@@ -1,56 +1,63 @@
 /* global firebase : true*/
-//const urlSingUp = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY';
 
 const emailInput = document.getElementById('email_input');
 const passwordInput = document.getElementById('password');
 const passwordConfirmInput = document.getElementById('confirm_password');
 const sendButton = document.getElementById('send_button');
 const logInButton = document.getElementById('logIn-button');
+const buttonsSection = document.getElementById('buttons-section');
+const registerSection = document.getElementById('register-section');
+const loginSection = document.getElementById('login-section');
+const emailButton = document.getElementById('btn-email');
 
 console.log('createa a page');
 
 var config = {
-   apiKey: "AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY",
-   authDomain: "redsocial-501ac.firebaseapp.com",
-   databaseURL: "https://redsocial-501ac.firebaseio.com",
-   projectId: "redsocial-501ac",
-   storageBucket: "redsocial-501ac.appspot.com",
-   messagingSenderId: "246552558120"
- };
- firebase.initializeApp(config);
+  apiKey: "AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY",
+  authDomain: "redsocial-501ac.firebaseapp.com",
+  databaseURL: "https://redsocial-501ac.firebaseio.com",
+  projectId: "redsocial-501ac",
+  storageBucket: "redsocial-501ac.appspot.com",
+  messagingSenderId: "246552558120"
+};
+firebase.initializeApp(config);
 
-function checkPasswords(){
- let pass = passwordInput.value;
- let confirmPass = passwordConfirmInput.value;
+function checkPasswords() {
+  let pass = passwordInput.value;
+  let confirmPass = passwordConfirmInput.value;
 
- //check if pass is longer than 5 characters
- if(pass.length<6){
-   alert('the password is not lenght enough');
-   return false;
- }
+  //check if pass is longer than 5 characters
+  if (pass.length < 6) {
+    alert('the password is not lenght enough');
+    return false;
+  }
 
- let passwordMatch = pass == confirmPass;
+  let passwordMatch = pass == confirmPass;
 
- if(!passwordMatch){
-   alert('the passwords are not the same');
- }
+  if (!passwordMatch) {
+    alert('the passwords are not the same');
+  }
 
- return passwordMatch;
+  return passwordMatch;
 }
 
-
-
 function singIn() {
-  if(checkPasswords()){
+  if (checkPasswords()) {
     firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
-    .then(function(){
-      checkEmail();
-      location.href='./editprofile.html';
-    })
+      .then(function(result) {
+        console.log('linea 48')
+        console.log(result)
+
+        location.href = './editprofile.html';
+        result = checkEmail()
+
+        return result
+
+      })
       .then(function(response) {
         console.log(response);
         //parse json to create a js object
-        resposne = response.json;
+        response = response.json;
         //get a user object inside the response object
         const user = response.user;
         //Save the data for the current User
@@ -59,16 +66,12 @@ function singIn() {
           email: user.email,
         }
 
-
-
-        //Move to the next page
-
       })
       .catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        switch(errorMessage){
+        switch (errorMessage) {
           case 'EMAIL_EXISTS':
             alert('this email already exist');
             break;
@@ -76,10 +79,8 @@ function singIn() {
             alert('this email is invalid please enter a valid one');
             break;
         }
-      }
-    );
+      });
   }
-
 }
 
 
@@ -89,12 +90,11 @@ const logIn = () => {
   const passwordSingIn = document.getElementById('password_sing_in').value;
 
   firebase.auth().signInWithEmailAndPassword(emailSingIn, passwordSingIn)
-  .then(function(){
+    .then(function() {
       let userSigIn = obtainUser();
-      if(userSigIn.emailVerified){
-        location.href='./editprofile.html';
-      }
-      else {
+      if (userSigIn.emailVerified) {
+        location.href = './editprofile.html';
+      } else {
         singOut();
         alert('debes validar tu email')
       }
@@ -106,22 +106,18 @@ const logIn = () => {
     });
 }
 
-//var provider = new firebase.auth.GoogleAuthProvider();
-
-
-
-
-
 const checkEmail = () => {
+  console.log('mail ennviado')
   var user = firebase.auth().currentUser;
   user.sendEmailVerification()
-  .then(function() {
-    // Email sent.
-    console.log('Enviando email');
-  }).catch(function(error) {
-    // An error happened.
-    console.log(error);
-  });
+  console.log(user)
+    .then(function() {
+      // Email sent.
+      console.log('Enviando email');
+    }).catch(function(error) {
+      // An error happened.
+      console.log(error);
+    });
 }
 
 const obtainUser = () => {
@@ -138,31 +134,54 @@ const obtainUser = () => {
   return userNew;
 }
 
-function googleSigIn(){
+function googleSigIn() {
 
   var provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider).then(function(result){
+  firebase.auth().signInWithPopup(provider).then(function(result) {
 
-    console.log(result)
-    console.log("success.goole Account")
+      console.log(result)
+      console.log("success.goole Account")
 
-    location.href='./editprofile.html';
+      location.href = './editprofile.html';
 
-  })
+    })
 
-  .catch(function(err){
-    console.log(err);
-    console.log("Intento fallido")
-  })
+    .catch(function(err) {
+      console.log(err);
+      console.log("Intento fallido")
+    })
 
 }
 
-logInButton.addEventListener('click',logIn);
-sendButton.addEventListener('click', function () {
-  singIn();
-});
+const hiddenSections = () => {
+  registerSection.style.display = "none";
+  loginSection.style.display = "none";
+}
 
-const btnGoogle = document.getElementById('btn-google');
-btnGoogle.addEventListener('click', ()=>{
-  googleSigIn()
-}  );
+const validateOption = () => {
+  if (localStorage.option === 'signup') {
+    registerSection.style.display = 'block';
+    loginSection.style.display = "none";
+  } else if (localStorage.option === 'login') {
+    registerSection.style.display = 'none';
+    loginSection.style.display = "block";
+  }
+}
+
+if (location.href.includes('login.html')) {
+  hiddenSections();
+
+  logInButton.addEventListener('click', logIn);
+  sendButton.addEventListener('click', function() {
+    singIn();
+  });
+
+  const btnGoogle = document.getElementById('btn-google');
+  btnGoogle.addEventListener('click', () => {
+    googleSigIn()
+  });
+  emailButton.addEventListener('click', validateOption);
+} else if (location.href.includes('editprofile.html')) {
+  const signOutButton = document.getElementById('signOut-button');
+  signOutButton.addEventListener('click', singOut)
+}
