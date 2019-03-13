@@ -1,0 +1,42 @@
+<section>
+  <!-- <section id="contenedor">
+    <header>
+      <nav class="navbar form-inline bg-primary">
+        <a class="navbar-brand"><img src="" class="d-inline-block align-top">EDULAB</a>
+        <form class="form-inline" action="index.html" method="post">
+          <button class="btn btn-light btm-outline-secondary btn-sm ml-2" type="button"><a href="index.html">Regresar</a></button>
+        </form>
+      </nav>
+    </header>
+  </section> -->
+
+  <section id="buttons-section" class=" container mt-3">
+    <button id="btn-email" type="button" class="btn btn-outline-secondary btn-block" onclick="library.getController().showFormSingUp()"><i class="fas fa-envelope"></i> Correo electrónico</button>
+  </section>
+
+  <section id="register-section" class="container egister-margin hidden mt-3">
+    <div class="row">
+      <form id="signup-form" class="w-50 mx-auto p-3 bg-ligth rounded border border-light border-bottom mt-3">
+        <h5>Registrate aqui</h5>
+        <div class="form-group">
+          <input id="email_input" type="email" class="form-control" name="yourEmail" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <input id="password" type="password" class="form-control" placeholder="Contraseña">
+        </div>
+        <div class="form-group">
+          <input id="confirm_password" type="password" class="form-control" placeholder="Confirmar contraseña">
+        </div>
+        <button id="send_button" type="button" class="btn btn-primary" onclick="library.getController().signUp(library.get('signup-form'))">Registrar</button>
+      </form>
+    </div>
+  </section>
+
+  <div class="mt-4"></div>
+  <section class="d-flex justify-content-center">
+    <button id="btn-google" class="btn btn-light" onclick="library.getController().googleSigIn()">
+      <span class="icon-google"><img class="icon-google" alt="" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"></span>
+      <span class="text-long">Sign in with Google</span>
+    </button>
+  </section>
+</section>
