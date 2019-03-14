@@ -10,21 +10,12 @@
 </head>
 
 <body> -->
-<section onload="ibrary.getController().observer()">
-  <!-- <section id="contenedor">
-    <header>
-      <nav class="navbar justufy-content-betweens form-inline bg-primary">
-        <a class="navbar-brand"><img src="" class="d-inline-block align-top">EDULAB</a>
-        <div class="form-inline" action="index.html" method="post">
-          <button id="signOut-button" class="btn btn-light btm-outline-secondary" type="submit" name="button">Sign Out</button>
-        </div>
-      </nav>
-    </header>
-  </section> -->
+<section>
+
 
   <section class="text-center">
     <img class="img-thumbnail" id="cliente-photo" style="width: 200px;">
-    <button type="button" id="edit_button">Edit</button>
+    <button type="button" id="edit_button" onclick="library.getController().editUser()">Edit</button>
     <h3>Welcome</h3>
     <input id="user-name" type="text" name="user-name" readonly>
     <button id="signOut-button" class="btn btn-light" onclick="library.getController().signOut()">Sign Out</button>

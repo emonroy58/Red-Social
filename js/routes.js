@@ -7,6 +7,8 @@
     .route('/signup', 'views/signup.html', 'enter', function(){
       library.getId('signup-form').noSubmit();
     })
-    .route('/editprofile', 'views/editprofile.html', 'editprofile', null)
+    .route('/editprofile', 'views/editprofile.html', 'editprofile', function(){
+      library.getController().observer();
+    })
 
 })(window, document);
