@@ -99,7 +99,7 @@ function printData()  {
 
            .then(function(docRef) {
              console.log("Document written with ID: ", docRef.id);
-
+             postField.value = '';
            })
            .catch(function(error) {
              console.error("Error adding document: ", error);
@@ -129,15 +129,17 @@ function updatePost (userId,docId,message){
 
   button.onclick = function(){
     var postRef = db.collection("posts").doc(userId).collection('private_post').doc(docId);
-    const postField = document.getElementById('post-field').value;
+    const postField = document.getElementById('post-field');
     let d = new Date(); //obtener fecha
     let fechaHoy =  d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
     return postRef.update({
-      message: postField,
+      message: postField.value,
       time: fechaHoy
     })
     .then(function() {
       console.log("Document successfully updated!");
+      button.innerHTML = 'Publicar';
+      postField.value = " ";
     })
     .catch(function(error) {
       // The document probably doesn't exist.
