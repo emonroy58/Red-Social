@@ -48,7 +48,7 @@ function singIn() {
         console.log('linea 48')
         console.log(result)
 
-        location.href = './editprofile.html';
+        location.href = 'editprofile.html';
         result = checkEmail()
 
         return result
@@ -93,7 +93,7 @@ const logIn = () => {
     .then(function() {
       let userSigIn = obtainUser();
       if (userSigIn.emailVerified) {
-        location.href = './editprofile.html';
+        location.href = 'editprofile.html';
       } else {
         singOut();
         alert('debes validar tu email')
@@ -142,7 +142,7 @@ function googleSigIn() {
       console.log(result)
       console.log("success.goole Account")
 
-      location.href = './editprofile.html';
+      location.href = 'editprofile.html';
 
     })
 
