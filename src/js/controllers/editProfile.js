@@ -13,7 +13,7 @@ let isEditable = false;
              displayName = user.email;
            }
 
-           var photoURL = '../img/profile.jpg';
+           var photoURL = 'img/profile.jpg';
            if(user.photoURL != null){
               photoURL = user.photoURL;
            }
