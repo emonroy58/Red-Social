@@ -38,7 +38,6 @@ function printData()  {
 (function (window, document) {
   library.controller('editprofile', {
     observer: function () {
-
        firebase.auth().onAuthStateChanged(function(user) {
          if (user) {
            console.log('hay usuario')
@@ -57,7 +56,9 @@ function printData()  {
           const userNameField = library.get('user-name');
           photoDefault.setAttribute("src",photoURL);
           userNameField.value = displayName;
-         }
+        }else{
+          window.location.hash = '#/';
+        }
        });
      },
     editUser: function () {
@@ -105,7 +106,7 @@ function printData()  {
              console.error("Error adding document: ", error);
            });
        }
-     },
+      },
      signOut: function () {
        firebase.auth().signOut()
        .then(function() {
