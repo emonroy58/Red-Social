@@ -1,0 +1,26 @@
+<section>
+  <section class="text-center">
+    <img class="img-thumbnail" id="cliente-photo" style="width: 200px;">
+    <button type="button" id="edit_button" onclick="library.getController().editUser()">Edit</button>
+    <h3>Welcome</h3>
+    <input id="user-name" type="text" name="user-name" readonly>
+  </section>
+
+  <section id="wall">
+    <label for="message">Estado</label>
+    <h3><span id="user-name"></span></h3>
+    <input id="post-field" type="text" name="message">
+    <button id="add-btn" type="button" onclick="library.getController().addPost()">Publicar</button>
+    <!-- <section id="posts" class="card text-center"> -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Posts</th>
+        </tr>
+      </thead>
+      <tbody id="tabla">
+
+      </tbody>
+    </table>
+  </section>
+</section>
