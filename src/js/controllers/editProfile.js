@@ -1,4 +1,6 @@
 let isEditable = false;
+let userArray = ['2n53GrXHIggQrrWg58CPiD4qevj1','4Ib7Fvuz8nP6QJv52r2Ug7PWj6n2','BcyOOhKuEheqtkT1kv5yL23reQB3',
+  'J7EdAQIxqYYwFCzyM1w2j8vFQy62','uqETPkSt6FeSsP25Nzq2oaQcKu52','xa6usO9Ge3YqBmfe7YrT1G0f7kp2'];
 
 function deletePost(userId,docId) {
   db.collection("posts").doc(userId).collection('private_post').doc(docId).delete()
@@ -12,7 +14,7 @@ function deletePost(userId,docId) {
 function printData()  {
   var tabla = document.getElementById('tabla');
   const user = firebase.auth().currentUser;
-  db.collection('posts').doc(user.uid).collection('private_post').onSnapshot((querySnapshot) => {
+  db.collection('posts').doc(user.uid).collection('private_post').orderBy('time','desc').limit(10).onSnapshot((querySnapshot) => {
     tabla.innerHTML = '';
     querySnapshot.forEach((doc) => {
       console.log(`${doc.id}=>${doc.data()}`);
@@ -23,8 +25,8 @@ function printData()  {
             <div class="card-body">
               <h5 class="card-title">${doc.data().userName}</h5>
               <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
-              <p class="card-text">${doc.data().message}</p>
-              <button class="btn btn-primary" type="submit"onclick="updatePost('${user.uid}','${doc.id}','${doc.data().message}')"><i class="far fa-edit"></i></button>
+              <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
+              <button id="edit-button${doc.id}" class="btn btn-primary" type="submit"onclick="updatePost('${user.uid}','${doc.id}','${doc.data().message}')"><i id="icon${doc.id}" class="far fa-edit"></i></button>
               <button class="btn btn-primary" type="submit" onclick="deletePost('${user.uid}','${doc.id}')"><i class="far fa-trash-alt"></i></button>
             </div>
           </div>
@@ -35,6 +37,35 @@ function printData()  {
   })
 }
 
+function printAll(){
+  tabla.innerHTML = '';
+  userArray.forEach(element =>{
+    db.collection('posts').doc(element).collection('private_post').orderBy('time','desc').limit(10).onSnapshot((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id}=>${doc.data()}`);
+        let messages=`
+        <tr>
+        <td>
+        <div class="card">
+        <div class="card-body">
+        <h5 class="card-title">${doc.data().userName}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
+        <textarea class="form-control" readOnly>${doc.data().message}</textarea><br>
+        <button class="btn btn-primary" type="submit"onclick="updatePost('${element}','${doc.id}','${doc.data().message}')"><i class="far fa-edit"></i></button>
+        <button class="btn btn-primary" type="submit" onclick="deletePost('${element}','${doc.id}')"><i class="far fa-trash-alt"></i></button>
+        </div>
+        </div>
+        </td>
+        </tr>
+        `;
+        tabla.insertAdjacentHTML("beforeend", messages);
+      })
+    })
+
+  });
+}
+
+
 (function (window, document) {
   library.controller('editprofile', {
     observer: function () {
@@ -42,6 +73,7 @@ function printData()  {
          if (user) {
            console.log('hay usuario')
            printData();
+           //printAll();
            var displayName = user.displayName;
            if(displayName == null){
              displayName = user.email;
@@ -85,7 +117,7 @@ function printData()  {
      },
      addPost: function() {
        let d = new Date(); //obtener fecha
-       let fechaHoy =  d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
+       let fechaHoy =  d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()+ " " + d.getHours() + ":" + d.getMinutes();
        const postField = document.getElementById('post-field');
        const user = firebase.auth().currentUser;
        if (postField.value != null) {
@@ -123,24 +155,26 @@ function printData()  {
 
 
 function updatePost (userId,docId,message){
-  document.getElementById('post-field').value = message;
-  const button = document.getElementById('add-btn');
-
-  button.innerHTML = 'Editar';
+  const button = library.get('edit-button'+docId);
+  const editIcon = library.get('icon'+docId);
+  const txtMessage = library.get('message'+docId);
+  editIcon.classList.toggle('fa-edit');
+  editIcon.classList.toggle('fa-save');
+  txtMessage.readOnly = false;
 
   button.onclick = function(){
     var postRef = db.collection("posts").doc(userId).collection('private_post').doc(docId);
-    const postField = document.getElementById('post-field');
     let d = new Date(); //obtener fecha
-    let fechaHoy =  d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
+    let fechaHoy =  d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()+ " " + d.getHours() + ":" + d.getMinutes();
     return postRef.update({
-      message: postField.value,
+      message: txtMessage.value,
       time: fechaHoy
     })
     .then(function() {
       console.log("Document successfully updated!");
-      button.innerHTML = 'Publicar';
-      postField.value = " ";
+      editIcon.classList.toggle('fa-save');
+      editIcon.classList.toggle('fa-edit');
+      txtMessage.readOnly = true;
     })
     .catch(function(error) {
       // The document probably doesn't exist.
