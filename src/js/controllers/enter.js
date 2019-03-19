@@ -8,7 +8,7 @@ function checkPasswords(pass, confirmPass) {
   let passwordMatch = pass == confirmPass;
 
   if (!passwordMatch) {
-    alert('the passwords are not the same');
+    alert;
   }
   return passwordMatch;
 }
