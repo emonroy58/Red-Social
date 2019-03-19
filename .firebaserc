@@ -1,6 +1,7 @@
 {
   "projects": {
     "redsocial": "redsocial-501ac",
-    "default": "redsocial-501ac"
+    "default": "redsocial-501ac",
+    "red-socialPersonal": "red-social-fbd2a"
   }
 }

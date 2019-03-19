@@ -7,4 +7,9 @@ var config = {
    messagingSenderId: "246552558120"
  };
  firebase.initializeApp(config);
+<<<<<<< HEAD:src/js/firebase.js
    var db = firebase.firestore();
+=======
+
+var db = firebase.firestore();
+>>>>>>> upstream/master:src/js/firebase.js
