@@ -1,12 +1,12 @@
 /* global firebase : true*/
 //const urlSingUp = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY';
 
-const emailInput = document.getElementById('email_input');
+/*const emailInput = document.getElementById('email_input');
 const passwordInput = document.getElementById('password');
 const passwordConfirmInput = document.getElementById('confirm_password');
 const sendButton = document.getElementById('send_button');
 const logInButton = document.getElementById('logIn-button');
-const buttonsSection = document.getElementById('buttons-section');
+/*const buttonsSection = document.getElementById('buttons-section');
 const registerSection = document.getElementById('register-section');
 const loginSection = document.getElementById('login-section');
 const emailButton = document.getElementById('btn-email');
@@ -192,4 +192,4 @@ if(location.href.includes('login.html')){
 else if(location.href.includes('editprofile.html')){
   const signOutButton = document.getElementById('signOut-button');
   signOutButton.addEventListener('click', singOut)
-}
+}*/

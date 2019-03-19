@@ -1,4 +1,4 @@
-const signupButton = document.getElementById('signup-button');
+/*const signupButton = document.getElementById('signup-button');
 const loginButton = document.getElementById('login-button');
 
 signupButton.addEventListener('click', ()=>{
@@ -10,4 +10,4 @@ signupButton.addEventListener('click', ()=>{
 loginButton.addEventListener('click', ()=>{
   window.location = './login.html';
   localStorage.option = 'login';
-});
+});*/
