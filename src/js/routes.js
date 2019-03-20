@@ -11,7 +11,7 @@
       library.getId('signup-form').noSubmit();
       showBackButton();
     })
-    .route('/editprofile', 'views/editprofile.html', 'editprofile', function(){
+    .route('/editprofile', 'views/editprofile.html', 'enter', function(){
       library.getController().observer();
       showPerfil();
     })
