@@ -1,22 +1,22 @@
 let isEditable = false;
 
-function deletePost(userId,docId) {
+function deletePost(userId, docId) {
   db.collection("posts").doc(userId).collection('private_post').doc(docId).delete()
-  .then(function() {
-    console.log("Document successfully deleted!");
-  }).catch(function(error) {
-    console.error("Error removing document: ", error);
-  });
+    .then(function() {
+      console.log("Document successfully deleted!");
+    }).catch(function(error) {
+      console.error("Error removing document: ", error);
+    });
 }
 
-function printData()  {
+function printData() {
   var tabla = document.getElementById('tabla');
   const user = firebase.auth().currentUser;
   db.collection('posts').doc(user.uid).collection('private_post').onSnapshot((querySnapshot) => {
     tabla.innerHTML = '';
     querySnapshot.forEach((doc) => {
       console.log(`${doc.id}=>${doc.data()}`);
-      tabla.innerHTML+=`
+      tabla.innerHTML += `
       <tr>
         <td>
           <div class="card">
@@ -35,117 +35,133 @@ function printData()  {
   })
 }
 
-(function (window, document) {
+(function(window, document) {
   library.controller('editprofile', {
-    observer: function () {
-       firebase.auth().onAuthStateChanged(function(user) {
-         if (user) {
-           console.log('hay usuario')
-           printData();
-           var displayName = user.displayName;
-           if(displayName == null){
-             displayName = user.email;
-           }
+    observer: function() {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          console.log('hay usuario')
+          printData();
+          var displayName = user.displayName;
+          if (displayName == null) {
+            displayName = user.email;
+          }
 
-           var photoURL = 'img/profile.jpg';
-           if(user.photoURL != null){
-              photoURL = user.photoURL;
-           }
+          var photoURL = 'img/profile.jpg';
+          if (user.photoURL != null) {
+            photoURL = user.photoURL;
+          }
 
           const photoDefault = library.get('cliente-photo');
           const userNameField = library.get('user-name');
-          photoDefault.setAttribute("src",photoURL);
+          photoDefault.setAttribute("src", photoURL);
           userNameField.value = displayName;
-        }else{
+        } else {
           window.location.hash = '#/';
         }
-       });
-     },
-    editUser: function () {
+      });
+    },
+    editUser: function() {
       const userNameField = library.get('user-name');
       const editButton = library.get('edit_button');
-       isEditable =! isEditable;
-       if(isEditable){
-         userNameField.readOnly  = false;
-         editButton.innerHTML = 'Save';
-       }
-       else{
-         firebase.auth().currentUser.updateProfile({
-           displayName: userNameField.value
-         })
-         .then(() => {
+      isEditable = !isEditable;
+      if (isEditable) {
+        userNameField.readOnly = false;
+        editButton.innerHTML = 'Save';
+      } else {
+        firebase.auth().currentUser.updateProfile({
+            displayName: userNameField.value
+          })
+          .then(() => {
 
-         })
-         .catch(()=>{
-           alert('something went wrong');
-         })
-         userNameField.readOnly  = true;
-         editButton.innerHTML = 'Edit';
-       }
-     },
-     addPost: function() {
-       let d = new Date(); //obtener fecha
-       let fechaHoy =  d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
-       const postField = document.getElementById('post-field');
-       const user = firebase.auth().currentUser;
-       if (postField.value != null) {
-         db.collection("posts").doc(user.uid).collection('private_post').add({
-             userName: user.displayName,
-             message: postField.value,
-             time: fechaHoy,
-             isPublic: false,
-             likes: [],
-             comments: []
-           })
+          })
+          .catch(() => {
+            alert('something went wrong');
+          })
+        userNameField.readOnly = true;
+        editButton.innerHTML = 'Edit';
+      }
+    },
 
-           .then(function(docRef) {
-             console.log("Document written with ID: ", docRef.id);
-             postField.value = '';
-           })
-           .catch(function(error) {
-             console.error("Error adding document: ", error);
-           });
-       }
-      },
-     signOut: function () {
-       firebase.auth().signOut()
-       .then(function() {
-         // Sign-out successful.
-         console.log('saliendo...');
-         window.location.hash = '#/';
-       }).catch(function(error) {
-         // An error happened.
-         console.log(error);
-       });
-     }
+    // addUser: function() {
+    //   let user = user.uid,
+    //     db.collection("users").doc("newUser").set({
+    //       userNew.name = user.displayName;
+    //       userNew.email = user.email;
+    //       userNew.photoUrl = user.photoURL;
+    //       userNew.emailVerified = user.emailVerified;
+    //     })
+    //     .then(function() {
+    //       console.log("Document successfully written!");
+    //     })
+    //     .catch(function(error) {
+    //       console.error("Error writing document: ", error);
+    //     });
+    // }
+
+    addPost: function() {
+      let d = new Date(); //obtener fecha
+      let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+      const postField = document.getElementById('post-field');
+      const user = firebase.auth().currentUser;
+      if (postField.value != null) {
+        db.collection("posts").doc(user.uid).collection('private_post').add({
+            userName: user.displayName,
+            message: postField.value,
+            time: fechaHoy,
+            isPublic: false,
+            likes: [],
+            comments: []
+          })
+
+          .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+            postField.value = '';
+          })
+          .catch(function(error) {
+            console.error("Error adding document: ", error);
+          });
+      }
+    },
+    signOut: function() {
+      firebase.auth().signOut()
+        .then(function() {
+          // Sign-out successful.
+          console.log('saliendo...');
+          window.location.hash = '#/';
+        }).catch(function(error) {
+          // An error happened.
+          console.log(error);
+        });
+    }
   });
 })(window, document)
 
 
-function updatePost (userId,docId,message){
+function updatePost(userId, docId, message) {
   document.getElementById('post-field').value = message;
   const button = document.getElementById('add-btn');
 
   button.innerHTML = 'Editar';
 
-  button.onclick = function(){
+  button.onclick = function() {
     var postRef = db.collection("posts").doc(userId).collection('private_post').doc(docId);
     const postField = document.getElementById('post-field');
     let d = new Date(); //obtener fecha
-    let fechaHoy =  d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
+    let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
     return postRef.update({
-      message: postField.value,
-      time: fechaHoy
-    })
-    .then(function() {
-      console.log("Document successfully updated!");
-      button.innerHTML = 'Publicar';
-      postField.value = " ";
-    })
-    .catch(function(error) {
-      // The document probably doesn't exist.
-      console.error("Error updating document: ", error);
-    });
+        message: postField.value,
+        time: fechaHoy
+      })
+      .then(function() {
+        console.log("Document successfully updated!");
+        button.innerHTML = 'Publicar';
+        postField.value = " ";
+      })
+      .catch(function(error) {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", error);
+      });
   }
 
 }
