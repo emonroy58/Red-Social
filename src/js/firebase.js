@@ -1,3 +1,4 @@
+
 var config = {
    apiKey: "AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY",
    authDomain: "redsocial-501ac.firebaseapp.com",

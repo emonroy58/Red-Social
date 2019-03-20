@@ -8,26 +8,10 @@ function checkPasswords(pass, confirmPass) {
   let passwordMatch = pass == confirmPass;
 
   if (!passwordMatch) {
-    alert('the passwords are not the same');
+    alert;
   }
   return passwordMatch;
 }
-
-function addUser() {
-      const user = firebase.auth().currentUser;d,
-        db.collection("users").doc("newUser").set({
-          userNew.name = user.displayName;
-          userNew.email = user.email;
-          userNew.photoUrl = user.photoURL;
-          userNew.emailVerified = user.emailVerified;
-        })
-        .then(function() {
-          console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-          console.error("Error writing document: ", error);
-        })
-    }
 
 const checkEmail = () => {
   console.log('mail ennviado')
