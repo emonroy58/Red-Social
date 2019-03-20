@@ -19,6 +19,7 @@ const checkEmail = () => {
   user.sendEmailVerification()
   console.log(user)
     .then(function() {
+      
       // Email sent.
       console.log('Enviando email');
     }).catch(function(error) {
@@ -37,6 +38,12 @@ const obtainUser = () => {
     userNew.photoUrl = user.photoURL;
     userNew.emailVerified = user.emailVerified;
     userNew.uid = user.uid;
+
+    db.collection('users').add({
+      user: user.uid,
+      last: user.displayName,
+     
+  })
   }
   return userNew;
 }
@@ -129,6 +136,10 @@ const obtainUser = () => {
       var provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithPopup(provider)
       .then(function(result){
+        db.collection('users').add({
+          user: user.uid,
+          last: user.displayName,
+        })
         console.log(result)
         console.log("success.goole Account")
 

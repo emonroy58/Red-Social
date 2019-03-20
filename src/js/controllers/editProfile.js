@@ -12,7 +12,7 @@ function deletePost(userId,docId) {
 function printData()  {
   var tabla = document.getElementById('tabla');
   const user = firebase.auth().currentUser;
-  db.collection('posts').doc(user.uid).collection('private_post').onSnapshot((querySnapshot) => {
+  db.collection('posts').doc(user.uid).collection('private_post').orderBy('time','desc').limit(10).onSnapshot((querySnapshot) => {
     tabla.innerHTML = '';
     querySnapshot.forEach((doc) => {
       console.log(`${doc.id}=>${doc.data()}`);
@@ -34,6 +34,7 @@ function printData()  {
     })
   })
 }
+
 
 (function (window, document) {
   library.controller('editprofile', {
@@ -117,7 +118,48 @@ function printData()  {
          // An error happened.
          console.log(error);
        });
+     },
+    
+     printAll: function(){
+     db.collection("users").get().then(function(querySnapshot) {
+        querySnapshot.forEach((doc)=>{
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.uid, " => ", doc.data());
+            let user =doc.data().user;
+            console.log(user);
+
+            var tabla = document.getElementById('tabla');
+    
+            db.collection('posts').doc(user).collection('private_post').orderBy('time','desc').limit(10).onSnapshot((querySnapshot) => {
+               querySnapshot.forEach((doc) => {
+                console.log(`${doc.id}=>${doc.data()}`);
+                tabla.innerHTML+=`
+                <tr>
+                  <td>
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">${doc.data().userName}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
+                        <p class="card-text">${doc.data().message}</p>
+                        <button class="btn btn-primary" type="submit"onclick="updatePost('${user}','${doc.id}','${doc.data().message}')"><i class="far fa-edit"></i></button>
+                        <button class="btn btn-primary" type="submit" onclick="deletePost('${user}','${doc.id}')"><i class="far fa-trash-alt"></i></button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                `
+              })
+            })
+           
+        });
+    });
+
+    
+
      }
+    
+
+
   });
 })(window, document)
 
