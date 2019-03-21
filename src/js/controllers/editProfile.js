@@ -39,16 +39,27 @@ function printData() {
   })
 }
 
+function like(id) {
+  if (document.getElementById(`like${id}`).classList.contains('like')) {
+    //remove a like
+    document.getElementById(`like${id}`).classList.remove("like");
+
+  } else {
+    //add a like
+    document.getElementById(`like${id}`).classList.add("like");
+  }
+}
+
 function printWall() {
   var tabla = library.get('tabla');
   tabla.innerHTML = '';
   db.collection('posts').get().then(function(querySnapshot) {
     querySnapshot.forEach(function(docMain) {
-        console.log(docMain.id, " => ", docMain.data());
-        db.collection('posts').doc(docMain.data().userId).collection('private_post').orderBy('time', 'desc').limit(10).onSnapshot((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            console.log(`${doc.id}=>${doc.data()}`);
-            let messages = `
+      console.log(docMain.id, " => ", docMain.data());
+      db.collection('posts').doc(docMain.data().userId).collection('private_post').orderBy('time', 'desc').limit(10).onSnapshot((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(`${doc.id}=>${doc.data()}`);
+          let messages = `
             <tr>
               <td>
                 <div class="card">
@@ -56,16 +67,24 @@ function printWall() {
                     <h5 class="card-title">${doc.data().userName}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
                     <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
+                    <button id="like${doc.id}" class="btn btn-primary ${gotUserLike(doc.data().likes, docMain.data().userId)}" type="submit" onclick="like('${doc.id}')"><i class="fab fa-gratipay"></i></button>
                   </div>
                 </div>
               </td>
             </tr>
             `;
-            tabla.insertAdjacentHTML("beforeend", messages);
-          })
+          tabla.insertAdjacentHTML("beforeend", messages);
         })
+      })
     });
   });
+}
+
+function gotUserLike(likes, userId) {
+  if (likes.includes(userId)) {
+    return 'like';
+  }
+  return '';
 }
 
 function updatePost(userId, docId, message) {

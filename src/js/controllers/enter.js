@@ -1,14 +1,14 @@
 function checkPasswords(pass, confirmPass) {
   //check if pass is longer than 5 characters
   if (pass.length < 6) {
-    alert('the password is not lenght enough');
+    document.getElementById("alert-password").style.display = "block";
     return false;
   }
 
   let passwordMatch = pass == confirmPass;
 
   if (!passwordMatch) {
-    alert('the passwords are not the same');
+    document.getElementById("alert-confirm-pass").style.display = "block";
   }
   return passwordMatch;
 }
@@ -94,6 +94,7 @@ const obtainUser = () => {
             var errorMessage = error.message;
             switch (errorMessage) {
               case 'EMAIL_EXISTS':
+              console.log('devfszvdf');
                 alert('this email already exist');
                 break;
               case 'INVALID_EMAIL':
