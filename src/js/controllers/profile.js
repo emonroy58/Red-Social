@@ -5,7 +5,7 @@ window.redSocial = {
         .then(function() {
           // Sign-out successful.
           console.log('saliendo...');
-          location.href='#/';
+          window.location.hash='#/';
         }).catch(function(error) {
           // An error happened.
           console.log(error);
@@ -31,6 +31,8 @@ window.redSocial = {
         console.log('mail ennviado')
         var user = firebase.auth().currentUser;
         user.sendEmailVerification()
+        alert('Tu registro se encuentra en proceso, favor de validar mail');
+        window.location.hash='#/';
         console.log(user)
           .then(function() {
             

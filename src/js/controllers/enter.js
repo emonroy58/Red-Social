@@ -1,5 +1,7 @@
 (function(window, document) {
 let isEditable = false;
+let d = new Date(); //obtener fecha
+let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()+ ":" + d.getSeconds();
   library.controller('enter', {
     
     showFormLogin: function(){
@@ -52,7 +54,7 @@ let isEditable = false;
     },
 
     logIn: function(form) {
-      console.log('click')
+      
       const emailSingIn = form.email_sing_in.value;
       const passwordSingIn = form.password_sing_in.value;
 
@@ -61,13 +63,12 @@ let isEditable = false;
           
           console.log('userSigIn')
           let userSigIn = window.redSocial.obtainUser();
-          if (userSigIn.emailVerified) {
-            console.log('si hay ver')
+          if (userSigIn.emailVerified) {            
             window.location.hash = '#/editprofile';
           } else {
-            console.log('no hay ver')
-            alert('debes validar tu email')
             window.redSocial.signOut();
+            alert('Favor de ir a u correo y validar el email que registraste');
+            
           }
         })
         .catch(function(error) {
@@ -127,8 +128,7 @@ let isEditable = false;
     },
 
     addPost: function() {
-      let d = new Date(); //obtener fecha
-      let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes();
+     
       const postField = document.getElementById('post-field');
       const user = firebase.auth().currentUser;
       if (postField.value != null) {
@@ -175,7 +175,7 @@ let isEditable = false;
                   <h5 class="card-title">${doc.data().userName}</h5>
                   <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
                   <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
-                  <button id="edit-button${doc.id}" class="btn btn-primary" type="submit"onclick="updatePost('${user.uid}','${doc.id}','${doc.data().message}')"><i id="icon${doc.id}" class="far fa-edit"></i></button>
+                  <button id="edit-button${doc.id}" class="btn btn-primary" type="submit"onclick="library.getController().updatePost('${user.uid}','${doc.id}','${doc.data().message}')"><i id="icon${doc.id}" class="far fa-edit"></i></button>
                   <button class="btn btn-primary" type="submit" onclick="library.getController().confirmDelete('${user.uid}','${doc.id}')"><i class="far fa-trash-alt"></i></button>
                 </div>
               </div>
@@ -226,9 +226,7 @@ let isEditable = false;
     
       button.onclick = function() {
         var postRef = db.collection("posts").doc(userId).collection('private_post').doc(docId);
-        let d = new Date(); //obtener fecha
-        let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes();
-        return postRef.update({
+            return postRef.update({
             message: txtMessage.value,
             time: fechaHoy
           })
