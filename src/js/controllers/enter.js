@@ -2,8 +2,9 @@
 let isEditable = false;
 let d = new Date(); //obtener fecha
 let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()+ ":" + d.getSeconds();
+let idBtn;
   library.controller('enter', {
-    
+
     showFormLogin: function(){
       const loginSection = library.get('login-section');
       loginSection.style.display = "block";
@@ -16,7 +17,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
       const email = form.email_input.value;
       const password = form.password.value;
       const passwordConfirm = form.confirm_password.value;
-      const checkPasswords = window.redSocial.checkPasswords(password,passwordConfirm); 
+      const checkPasswords = window.redSocial.checkPasswords(password,passwordConfirm);
       if (checkPasswords) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
           .then(function(result) {
@@ -43,6 +44,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
             var errorMessage = error.message;
             switch (errorMessage) {
               case 'EMAIL_EXISTS':
+              console.log('devfszvdf');
                 alert('this email already exist');
                 break;
               case 'INVALID_EMAIL':
@@ -54,21 +56,21 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
     },
 
     logIn: function(form) {
-      
+
       const emailSingIn = form.email_sing_in.value;
       const passwordSingIn = form.password_sing_in.value;
 
       firebase.auth().signInWithEmailAndPassword(emailSingIn, passwordSingIn)
         .then(function() {
-          
+
           console.log('userSigIn')
           let userSigIn = window.redSocial.obtainUser();
-          if (userSigIn.emailVerified) {            
+          if (userSigIn.emailVerified) {
             window.location.hash = '#/editprofile';
           } else {
             window.redSocial.signOut();
             alert('Favor de ir a u correo y validar el email que registraste');
-            
+
           }
         })
         .catch(function(error) {
@@ -82,7 +84,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           console.log('hay usuario')
-          
+
           library.getController().printData();
           var displayName = user.displayName;
           if (displayName == null) {
@@ -102,7 +104,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
           window.location.hash = '#/';
         }
       });
-    }, 
+    },
 
 
     editUser: function() {
@@ -128,9 +130,10 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
     },
 
     addPost: function() {
-     
+
       const postField = document.getElementById('post-field');
       const user = firebase.auth().currentUser;
+      const isPublic = document.getElementById('privacy');
       if (postField.value != null) {
         db.collection("posts").doc(user.uid).set({
             userId: user.uid
@@ -187,16 +190,60 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
       })
     },
 
+    gotUserLike: function (likes, userId) {
+      if (likes.includes(userId)) {
+        return 'like';
+      }
+      return '';
+    },
+
+    likes: function (docId, userIdPost, likesCons) {
+      const button = library.get('like'+ docId);
+      if (button.classList.contains('like')) {
+          //remove a like
+          button.classList.remove("like");
+
+
+      } else {
+        //add a like
+      // button.add("like");
+        button.classList.add('like')
+      //  button.onclick = function() {
+          const obtUser = window.redSocial.obtainUser();
+          var arrayLikes = likesCons.push(obtUser.uid);
+          console.log(arrayLikes.length);
+          var  postRef = db.collection("posts").doc(userIdPost).collection('private_post').doc(docId);
+              //var logLike= likes.length;
+
+              return postRef.update({
+              likes: [arrayLikes]
+            })
+
+            .then(function() {
+              console.log("Document successfully updated!");
+
+            })
+            .catch(function(error) {
+              // The document probably doesn't exist.
+              console.error("Error updating document: ", error);
+            });
+    //  }
+
+    }
+  },
+
     printWall: function() {
       var tabla = library.get('tabla');
       tabla.innerHTML = '';
       db.collection('posts').get().then(function(querySnapshot) {
         querySnapshot.forEach(function(docMain) {
-            console.log(docMain.id, " => ", docMain.data());
-            db.collection('posts').doc(docMain.data().userId).collection('private_post').orderBy('time', 'desc').limit(10).onSnapshot((querySnapshot) => {
-              querySnapshot.forEach((doc) => {
-                console.log(`${doc.id}=>${doc.data()}`);
-                let messages = `
+          console.log(docMain.id, " => ", docMain.data());
+          db.collection('posts').doc(docMain.data().userId).collection('private_post').orderBy('time', 'desc').limit(10).onSnapshot((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              console.log(`${doc.id}=>${doc.data()}`);
+              let likesCons = doc.data().likes;
+              console.log(doc.data().likes[0]);
+              let messages = `
                 <tr>
                   <td>
                     <div class="card">
@@ -204,18 +251,19 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
                         <h5 class="card-title">${doc.data().userName}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
                         <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
+                        <button id="like${doc.id}" class="btn btn-primary (library.getController().gotUserLike(${doc.data().likes}, ${docMain.data().userId}))" type="submit" onclick="library.getController().likes('${doc.id}', '${docMain.data().userId}', ['${likesCons}'])"><i class="fab fa-gratipay"></i></button>
                       </div>
                     </div>
                   </td>
                 </tr>
                 `;
-                tabla.insertAdjacentHTML("beforeend", messages);
-              })
+              tabla.insertAdjacentHTML("beforeend", messages);
             })
+          })
         });
       });
     },
-    
+
      updatePost: function(userId, docId) {
       const button = library.get('edit-button' + docId);
       const editIcon = library.get('icon' + docId);
@@ -223,7 +271,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
       editIcon.classList.toggle('fa-edit');
       editIcon.classList.toggle('fa-save');
       txtMessage.readOnly = false;
-    
+
       button.onclick = function() {
         var postRef = db.collection("posts").doc(userId).collection('private_post').doc(docId);
             return postRef.update({
@@ -243,7 +291,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
       }
     },
 
-    
+
     deletePost: function(userId, docId) {
       db.collection("posts").doc(userId).collection('private_post').doc(docId).delete()
         .then(function() {
