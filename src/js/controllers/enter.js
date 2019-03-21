@@ -8,15 +8,15 @@ function checkPasswords(pass, confirmPass) {
   let passwordMatch = pass == confirmPass;
 
   if (!passwordMatch) {
-    alert;
+    alert('the passwords are not the same');
   }
   return passwordMatch;
 }
 
 const checkEmail = () => {
-  console.log('mail enviado')
+  console.log('mail ennviado')
   var user = firebase.auth().currentUser;
-  user.sendEmailVerification();
+  user.sendEmailVerification()
   console.log(user)
     .then(function() {
       // Email sent.
@@ -41,26 +41,26 @@ const obtainUser = () => {
   return userNew;
 }
 
-const singOut = () => {
-  firebase.auth().signOut()
-    .then(function() {
-      // Sign-out successful.
-      console.log('saliendo...');
-      window.location.hash = '#/';
-    }).catch(function(error) {
-      // An error happened.
-      console.log(error);
-    });
-}
+ const singOut = () => {
+   firebase.auth().signOut()
+   .then(function() {
+     // Sign-out successful.
+     console.log('saliendo...');
+     window.location.hash = '#/';
+   }).catch(function(error) {
+     // An error happened.
+     console.log(error);
+   });
+ }
 
 (function(window, document) {
   library.controller('enter', {
 
-    showFormLogin: function() {
+    showFormLogin: function(){
       const loginSection = library.get('login-section');
       loginSection.style.display = "block";
     },
-    showFormSingUp: function() {
+    showFormSingUp: function(){
       const registerSection = library.get('register-section');
       registerSection.style.display = "block";
     },
@@ -71,12 +71,13 @@ const singOut = () => {
       if (checkPasswords(password, passwordConfirm)) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
           .then(function(result) {
-            console.log(result);
+            console.log(result)
             window.location.hash = '#/editprofile';
             result = checkEmail()
             return result
           })
-          .then(function(response)
+          .then(function(response) {
+            console.log(response);
             //parse json to create a js object
             response = response.json;
             //get a user object inside the response object
@@ -85,9 +86,8 @@ const singOut = () => {
             let userData = {
               id: user.uid,
               email: user.email,
-              userName: user.displayName,
-              userPhoto: user.photoURL
-            };
+            }
+          })
           .catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
@@ -110,8 +110,8 @@ const singOut = () => {
 
       firebase.auth().signInWithEmailAndPassword(emailSingIn, passwordSingIn)
         .then(function() {
-          let userSigIn = obtainUser();
-          console.log(userSigIn);
+           let userSigIn = obtainUser();
+           console.log(userSigIn);
           if (userSigIn.emailVerified) {
             window.location.hash = '#/editprofile';
           } else {
@@ -125,19 +125,19 @@ const singOut = () => {
           const errorMessages = error.messages;
         });
     },
-    googleSigIn: function() {
+    googleSigIn: function(){
       var provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithPopup(provider)
-        .then(function(result) {
-          console.log(result)
-          console.log("success.goole Account")
+      .then(function(result){
+        console.log(result)
+        console.log("success.goole Account")
 
-          window.location.hash = '#/editprofile';
-        })
-        .catch(function(err) {
-          console.log(err);
-          console.log("Intento fallido")
-        })
+        window.location.hash = '#/editprofile';
+      })
+      .catch(function(err){
+        console.log(err);
+        console.log("Intento fallido")
+      })
     }
   });
 })(window, document);
