@@ -266,10 +266,9 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
       firebase.auth().signInWithPopup(provider)
       .then(function(result){
         var token = result.credential.accessToken;
-        db.collection("posts").add({
-          user: user.uid,
-          last: user.displayName,
-        })
+        /*db.collection("posts").add({
+           last: user.displayName
+        })*/
         console.log(result)
         console.log("success.goole Account")
 
