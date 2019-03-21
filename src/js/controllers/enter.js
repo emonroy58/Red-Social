@@ -262,9 +262,11 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
 
     googleSigIn: function(){
       var provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
       firebase.auth().signInWithPopup(provider)
       .then(function(result){
-        db.collection('users').add({
+        var token = result.credential.accessToken;
+        db.collection("posts").add({
           user: user.uid,
           last: user.displayName,
         })
