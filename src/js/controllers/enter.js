@@ -187,13 +187,13 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
       })
     },
 
-    printWall: function() {
-      var tabla = library.get('tabla');
-      tabla.innerHTML = '';
+    printWall: function(name,time,iD,msg) {
+     var tabla = library.get('tabla');
+     tabla.innerHTML = '';
       db.collection('posts').get().then(function(querySnapshot) {
         querySnapshot.forEach(function(docMain) {
             console.log(docMain.id, " => ", docMain.data());
-            db.collection('posts').doc(docMain.data().userId).collection('private_post').orderBy('time', 'desc').limit(10).onSnapshot((querySnapshot) => {
+            db.collection('posts').doc(docMain.data().userId).collection('private_post').orderBy('time', 'desc').limit(5).onSnapshot((querySnapshot) => {
               querySnapshot.forEach((doc) => {
                 console.log(`${doc.id}=>${doc.data()}`);
                 let messages = `
@@ -204,6 +204,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
                         <h5 class="card-title">${doc.data().userName}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
                         <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
+                        <button class="btn btn-primary" type="submit" onclick=""><i class="far fa-thumbs-up"></i></button>
                       </div>
                     </div>
                   </td>
@@ -214,6 +215,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
             })
         });
       });
+
     },
     
      updatePost: function(userId, docId) {
@@ -255,10 +257,10 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
 
     confirmDelete: (userId, docId)=>{
       if (confirm('¿Estas seguro de eliminar este post?')){
-           deletePost(userId, docId)
+           library.getController().deletePost(userId, docId)
         }
      },
-
+   
 
     googleSigIn: function(){
       var provider = new firebase.auth.GoogleAuthProvider();

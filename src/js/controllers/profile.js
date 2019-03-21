@@ -58,6 +58,6 @@ window.redSocial = {
         }
         return passwordMatch;
       },
-    
-
+       
+      
 }
