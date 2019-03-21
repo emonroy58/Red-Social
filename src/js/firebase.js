@@ -1,3 +1,4 @@
+
 var config = {
    apiKey: "AIzaSyD_a1alIox_XB6_IESao3Cv6G09mqacKoY",
    authDomain: "redsocial-501ac.firebaseapp.com",
@@ -8,4 +9,15 @@ var config = {
  };
  firebase.initializeApp(config);
 
-var db = firebase.firestore();
+
+// var config = {
+//     apiKey: "AIzaSyCwEfH87thPEunLkbcnvAHwQ30Grxa0RR8",
+//     authDomain: "red-social-fbd2a.firebaseapp.com",
+//     databaseURL: "https://red-social-fbd2a.firebaseio.com",
+//     projectId: "red-social-fbd2a",
+//     storageBucket: "red-social-fbd2a.appspot.com",
+//     messagingSenderId: "652039503394"
+//   };
+//   firebase.initializeApp(config);
+//
+ var db = firebase.firestore();

@@ -14,7 +14,7 @@
     ]
   },
   "database": {
-    "rules": "y"
+    "rules": "database.rules.json"
   },
   "firestore": {
     "rules": "firestore.rules",

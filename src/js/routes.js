@@ -1,3 +1,4 @@
+
 (function(window, document){
   $.getId('view').router()
     .route('/', 'views/home.html', null, function(){
