@@ -149,7 +149,7 @@ let idBtn;
             message: postField.value,
             time: fechaHoy,
             isPublic: false,
-            likes: [],
+            likes: 0,
             comments: []
           })
 
@@ -178,14 +178,16 @@ let idBtn;
                   <h5 class="card-title">${doc.data().userName}</h5>
                   <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
                   <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
-                  <button id="edit-button${doc.id}" class="btn btn-primary" type="submit"onclick="library.getController().updatePost('${user.uid}','${doc.id}','${doc.data().message}')"><i id="icon${doc.id}" class="far fa-edit"></i></button>
-                  <button class="btn btn-primary" type="submit" onclick="library.getController().confirmDelete('${user.uid}','${doc.id}')"><i class="far fa-trash-alt"></i></button>
+                  <button id="edit-button${doc.id}" class="btn btn-primary" type="submit"><i id="icon${doc.id}" class="far fa-edit"></i></button>
+                  <button id="delete-button${doc.id}" class="btn btn-primary" type="submit"><i class="far fa-trash-alt"></i></button>
                 </div>
               </div>
             </td>
           </tr>
           `;
           tabla.insertAdjacentHTML("beforeend", messages);
+          library.getController().eventEdit(user.uid,doc.id);
+          library.getController().eventDelete(user.uid,doc.id);
         })
       })
     },
@@ -197,29 +199,49 @@ let idBtn;
       return '';
     },
 
-    likes: function (docId, userIdPost, likesCons) {
+    likes: function (docId, userIdPost, likesCount) {
       const button = library.get('like'+ docId);
+
       if (button.classList.contains('like')) {
           //remove a like
           button.classList.remove("like");
 
+          const countLikes = parseInt(likesCount) - 1;
+          console.log(likesCount);
+          var  postRef = db.collection("posts").doc(userIdPost).collection('private_post').doc(docId);
+              //var logLike= likes.length;
+
+              return postRef.update({
+              likes: countLikes
+            })
+
+            .then(function(result) {
+              console.log("Document successfully updated!");
+              console.log(likesCount);
+              const labelLike = library.get('likes-label');
+              labelLike.innerHTML = likesCount;
+
+            })
+            .catch(function(error) {
+              // The document probably doesn't exist.
+              console.error("Error updating document: ", error);
+            });
 
       } else {
         //add a like
       // button.add("like");
         button.classList.add('like')
       //  button.onclick = function() {
-          const obtUser = window.redSocial.obtainUser();
-          var arrayLikes = likesCons.push(obtUser.uid);
-          console.log(arrayLikes.length);
+          const countLikes = parseInt(likesCount) + 1;
+          console.log(likesCount);
           var  postRef = db.collection("posts").doc(userIdPost).collection('private_post').doc(docId);
               //var logLike= likes.length;
 
               return postRef.update({
-              likes: [arrayLikes]
+              likes: countLikes
             })
 
-            .then(function() {
+            .then(function(result) {
               console.log("Document successfully updated!");
 
             })
@@ -227,9 +249,8 @@ let idBtn;
               // The document probably doesn't exist.
               console.error("Error updating document: ", error);
             });
-    //  }
+     }
 
-    }
   },
 
     printWall: function() {
@@ -241,8 +262,8 @@ let idBtn;
           db.collection('posts').doc(docMain.data().userId).collection('private_post').orderBy('time', 'desc').limit(10).onSnapshot((querySnapshot) => {
             querySnapshot.forEach((doc) => {
               console.log(`${doc.id}=>${doc.data()}`);
-              let likesCons = doc.data().likes;
-              console.log(doc.data().likes[0]);
+              // let likesCons = doc.data().likes;
+              // console.log(doc.data().likes[0]);
               let messages = `
                 <tr>
                   <td>
@@ -251,13 +272,15 @@ let idBtn;
                         <h5 class="card-title">${doc.data().userName}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
                         <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
-                        <button id="like${doc.id}" class="btn btn-primary (library.getController().gotUserLike(${doc.data().likes}, ${docMain.data().userId}))" type="submit" onclick="library.getController().likes('${doc.id}', '${docMain.data().userId}', ['${likesCons}'])"><i class="fab fa-gratipay"></i></button>
+                        <button id="like${doc.id}" class="btn btn-primary (library.getController().gotUserLike(${doc.data().likes}, ${docMain.data().userId}))" type="button"><i class="fab fa-gratipay"></i></button>
+                        <label id="likes-label">${doc.data().likes}</label>
                       </div>
                     </div>
                   </td>
                 </tr>
                 `;
               tabla.insertAdjacentHTML("beforeend", messages);
+              library.getController().eventLike(doc.id, docMain.data().userId, doc.data().likes);
             })
           })
         });
@@ -303,10 +326,30 @@ let idBtn;
 
     confirmDelete: (userId, docId)=>{
       if (confirm('¿Estas seguro de eliminar este post?')){
-           deletePost(userId, docId)
+           library.getController().deletePost(userId, docId);
         }
      },
 
+     eventEdit: (userId, docId) => {
+       const editButton = library.get('edit-button' + docId);
+       editButton.addEventListener('click', () => {
+         library.getController().updatePost(userId, docId);
+       })
+     },
+
+     eventDelete: (userId, docId) => {
+       const deleteButton = library.get('delete-button' + docId);
+       deleteButton.addEventListener('click', () => {
+         library.getController().confirmDelete(userId, docId);
+       })
+     },
+
+     eventLike: (docId, userIdPost, likesCount)  => {
+       const likeButoon = library.get('like' + docId);
+       likeButoon.addEventListener('click', () => {
+         library.getController().likes(docId, userIdPost, likesCount);
+       })
+     },
 
     googleSigIn: function(){
       var provider = new firebase.auth.GoogleAuthProvider();
