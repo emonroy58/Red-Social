@@ -215,11 +215,9 @@ let idBtn;
               likes: countLikes
             })
 
-            .then(function(result) {
+            .then(function() {
               console.log("Document successfully updated!");
               console.log(likesCount);
-              const labelLike = library.get('likes-label');
-              labelLike.innerHTML = likesCount;
 
             })
             .catch(function(error) {
@@ -334,6 +332,7 @@ let idBtn;
        const editButton = library.get('edit-button' + docId);
        editButton.addEventListener('click', () => {
          library.getController().updatePost(userId, docId);
+
        })
      },
 
@@ -349,6 +348,14 @@ let idBtn;
        likeButoon.addEventListener('click', () => {
          library.getController().likes(docId, userIdPost, likesCount);
        })
+     },
+
+     backPerfil: () => {
+       window.location.hash = '/editprofile';
+     },
+
+     goWall: () => {
+       window.location.hash = '/wall';
      },
 
     googleSigIn: function(){
