@@ -129,11 +129,16 @@ let idBtn;
       }
     },
 
+    privacy: function() {
+        const isPublic = privaci.value;
+        if(privaci ==='true'){
+
+        }
+    },
     addPost: function() {
 
       const postField = document.getElementById('post-field');
       const user = firebase.auth().currentUser;
-      const isPublic = document.getElementById('privacy');
       if (postField.value != null) {
         db.collection("posts").doc(user.uid).set({
             userId: user.uid
@@ -251,13 +256,14 @@ let idBtn;
                         <h5 class="card-title">${doc.data().userName}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
                         <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
-                        <button id="like${doc.id}" class="btn btn-primary (library.getController().gotUserLike(${doc.data().likes}, ${docMain.data().userId}))" type="submit" onclick="library.getController().likes('${doc.id}', '${docMain.data().userId}', ['${likesCons}'])"><i class="fab fa-gratipay"></i></button>
+                        <button id="like${doc.id}" class="btn btn-primary (library.getController().gotUserLike(${doc.data().likes}, ${docMain.data().userId}))" type="submit"><i class="fab fa-gratipay"></i></button>
                       </div>
                     </div>
                   </td>
                 </tr>
                 `;
               tabla.insertAdjacentHTML("beforeend", messages);
+              library.getController().likes(doc.id, docMain.data().userId, likesCons);
             })
           })
         });
@@ -307,6 +313,9 @@ let idBtn;
         }
      },
 
+printlikes: () {
+  const 
+},
 
     googleSigIn: function(){
       var provider = new firebase.auth.GoogleAuthProvider();
