@@ -15,5 +15,9 @@
       library.getController().observer();
       showPerfil();
     })
+    .route('/wall', 'views/wall.html', 'enter', function(){
+      library.getController().printWall();
+      showPerfil();
+    })
 
 })(window, document);
