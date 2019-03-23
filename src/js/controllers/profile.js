@@ -32,7 +32,7 @@ window.redSocial = {
         var user = firebase.auth().currentUser;
         user.sendEmailVerification()
         alert('Tu registro se encuentra en proceso, favor de validar mail');
-        window.location.hash='#/';
+        window.redSocial.signOut();
         console.log(user)
           .then(function() {
             // Email sent.
