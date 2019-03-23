@@ -1,7 +1,7 @@
 <section>
 
     <section class="conta-btnall">
-       <button type="button" id="edit_button" onclick="library.getController().printWall()">Todos los User</button>
+       <button type="button" id="wall-button" onclick="library.getController().goWall()">Muro</button>
 
 </section>
 
@@ -15,9 +15,9 @@
   <section id="wall">
     <label for="message">Estado</label>
     <h3><span id="user-name"></span></h3>
-    <input id="post-field" type="text" name="message">
+    <textarea id="post-field" class="form-control" name="message"></textarea>
     <button id="add-btn" type="button" onclick="library.getController().addPost()">Publicar</button>
-    <select name="privacy">
+    <select id="privacy" name="privacy">
     <option value="true">Publico
     <option value="false">Privado
     </select>
@@ -33,18 +33,4 @@
       </tbody>
     </table>
   </section>
-</section>
-
-
-<table class="tableAll">
-    <thead>
-      <tr>
-        <th scope="colAll">Posts</th>
-      </tr>
-    </thead>
-    <tbody id="tablaAll">
-
-    </tbody>
-  </table>
-</section>
 </section>
