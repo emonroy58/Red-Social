@@ -1,4 +1,3 @@
-
 (function(window, document){
   $.getId('view').router()
     .route('/', 'views/home.html', null, function(){
@@ -12,7 +11,11 @@
       library.getId('signup-form').noSubmit();
       showBackButton();
     })
-    .route('/editprofile', 'views/editprofile.html', 'editprofile', function(){
+    .route('/editprofile', 'views/editprofile.html', 'enter', function(){
+      library.getController().observer();
+      showPerfil();
+    })
+    .route('/wall', 'views/wall.html', 'enter', function(){
       library.getController().observer();
       showPerfil();
     })

@@ -1,66 +1,15 @@
-function checkPasswords(pass, confirmPass) {
-  //check if pass is longer than 5 characters
-  if (pass.length < 6) {
-    document.getElementById("alert-password").style.display = "block";
-    return false;
-  }
-
-  let passwordMatch = pass == confirmPass;
-
-  if (!passwordMatch) {
-    document.getElementById("alert-confirm-pass").style.display = "block";
-  }
-  return passwordMatch;
-}
-
-const checkEmail = () => {
-  console.log('mail ennviado')
-  var user = firebase.auth().currentUser;
-  user.sendEmailVerification()
-  console.log(user)
-    .then(function() {
-      // Email sent.
-      console.log('Enviando email');
-    }).catch(function(error) {
-      // An error happened.
-      console.log(error);
-    });
-}
-
-const obtainUser = () => {
-  let user = firebase.auth().currentUser;
-  let userNew = {};
-
-  if (user != null) {
-    userNew.name = user.displayName;
-    userNew.email = user.email;
-    userNew.photoUrl = user.photoURL;
-    userNew.emailVerified = user.emailVerified;
-    userNew.uid = user.uid;
-  }
-  return userNew;
-}
-
- const singOut = () => {
-   firebase.auth().signOut()
-   .then(function() {
-     // Sign-out successful.
-     console.log('saliendo...');
-     window.location.hash = '#/';
-   }).catch(function(error) {
-     // An error happened.
-     console.log(error);
-   });
- }
-
 (function(window, document) {
+  let isEditable = false;
+  let d = new Date(); //obtener fecha
+  let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+  let idBtn;
   library.controller('enter', {
 
-    showFormLogin: function(){
+    showFormLogin: function() {
       const loginSection = library.get('login-section');
       loginSection.style.display = "block";
     },
-    showFormSingUp: function(){
+    showFormSingUp: function() {
       const registerSection = library.get('register-section');
       registerSection.style.display = "block";
     },
@@ -68,12 +17,20 @@ const obtainUser = () => {
       const email = form.email_input.value;
       const password = form.password.value;
       const passwordConfirm = form.confirm_password.value;
-      if (checkPasswords(password, passwordConfirm)) {
+
+      document.getElementById("alert-password").style.display = "none";
+      document.getElementById("alert-confirm-pass").style.display = "none";
+      document.getElementById("alert-email").style.display = "none";
+
+
+
+      const checkPasswords = window.redSocial.checkPasswords(password, passwordConfirm);
+      if (checkPasswords) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
           .then(function(result) {
             console.log(result)
             window.location.hash = '#/editprofile';
-            result = checkEmail()
+            result = window.redSocial.checkEmail()
             return result
           })
           .then(function(response) {
@@ -91,14 +48,16 @@ const obtainUser = () => {
           .catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
-            var errorMessage = error.message;
-            switch (errorMessage) {
-              case 'EMAIL_EXISTS':
-              console.log('devfszvdf');
-                alert('this email already exist');
+            switch (errorCode) {
+              case 'auth/email-already-in-use':
+                document.getElementById("alert-email").style.display = "block";
+                document.getElementById("email_text").innerHTML = 'this email already exist';
                 break;
-              case 'INVALID_EMAIL':
-                alert('this email is invalid please enter a valid one');
+              case 'auth/invalid-email':
+                document.getElementById("alert-email").style.display = "block";
+                document.getElementById("email_text").innerHTML = 'El correo electrónico es invalido';
+                break;
+              default:
                 break;
             }
           });
@@ -106,18 +65,21 @@ const obtainUser = () => {
     },
 
     logIn: function(form) {
+
       const emailSingIn = form.email_sing_in.value;
       const passwordSingIn = form.password_sing_in.value;
 
       firebase.auth().signInWithEmailAndPassword(emailSingIn, passwordSingIn)
         .then(function() {
-           let userSigIn = obtainUser();
-           console.log(userSigIn);
+
+          console.log('userSigIn')
+          let userSigIn = window.redSocial.obtainUser();
           if (userSigIn.emailVerified) {
             window.location.hash = '#/editprofile';
           } else {
-            singOut();
-            alert('debes validar tu email')
+            window.redSocial.signOut();
+            alert('Favor de ir a u correo y validar el email que registraste');
+
           }
         })
         .catch(function(error) {
@@ -126,19 +88,294 @@ const obtainUser = () => {
           const errorMessages = error.messages;
         });
     },
-    googleSigIn: function(){
-      var provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider)
-      .then(function(result){
-        console.log(result)
-        console.log("success.goole Account")
 
-        window.location.hash = '#/editprofile';
+    observer: function() {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          console.log('hay usuario')
+          if(location.href.includes('editprofile')){
+            library.getController().printData();
+            var displayName = user.displayName;
+            if (displayName == null) {
+              displayName = user.email;
+            }
+
+            var photoURL = 'img/profile.jpg';
+            if (user.photoURL != null) {
+              photoURL = user.photoURL;
+            }
+
+            const photoDefault = library.get('cliente-photo');
+            const userNameField = library.get('user-name');
+            photoDefault.setAttribute("src", photoURL);
+            userNameField.value = displayName;
+
+          }else if(location.href.includes('wall')){
+            library.getController().printWall();
+          }
+        } else {
+          window.location.hash = '#/';
+        }
+      });
+    },
+
+
+    editUser: function() {
+      const userNameField = library.get('user-name');
+      const editButton = library.get('edit_button');
+      isEditable = !isEditable;
+      if (isEditable) {
+        userNameField.readOnly = false;
+        editButton.innerHTML = 'Save';
+      } else {
+        firebase.auth().currentUser.updateProfile({
+            displayName: userNameField.value
+          })
+          .then(() => {
+
+          })
+          .catch(() => {
+            alert('something went wrong');
+          })
+        userNameField.readOnly = true;
+        editButton.innerHTML = 'Edit';
+      }
+    },
+
+    addPost: function() {
+
+      const postField = document.getElementById('post-field');
+      const user = firebase.auth().currentUser;
+      const privacyField = document.getElementById('privacy');
+      const isPublic = privacyField.options[privacyField.selectedIndex].value;
+      if (postField.value != null) {
+        db.collection("posts").doc(user.uid).set({
+            userId: user.uid
+          })
+          .then(function() {
+            console.log("Document successfully written!");
+          })
+          .catch(function(error) {
+            console.error("Error writing document: ", error);
+          });
+        db.collection("posts").doc(user.uid).collection('private_post').add({
+            userName: user.displayName,
+            message: postField.value,
+            time: fechaHoy,
+            isPublic: isPublic,
+            likes: 0,
+            comments: []
+          })
+
+          .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+            postField.value = '';
+          })
+          .catch(function(error) {
+            console.error("Error adding document: ", error);
+          });
+      }
+    },
+
+    printData: function() {
+      var tabla = document.getElementById('tabla');
+      const user = firebase.auth().currentUser;
+      db.collection('posts').doc(user.uid).collection('private_post').orderBy('time', 'desc').limit(10).onSnapshot((querySnapshot) => {
+        tabla.innerHTML = '';
+        querySnapshot.forEach((doc) => {
+          console.log(`${doc.id}=>${doc.data()}`);
+          let messages = `
+          <tr>
+            <td>
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">${doc.data().userName}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
+                  <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
+                  <button id="edit-button${doc.id}" class="btn btn-primary" type="submit"><i id="icon${doc.id}" class="far fa-edit"></i></button>
+                  <button id="delete-button${doc.id}" class="btn btn-primary" type="submit"><i class="far fa-trash-alt"></i></button>
+                </div>
+              </div>
+            </td>
+          </tr>
+          `;
+          tabla.insertAdjacentHTML("beforeend", messages);
+          library.getController().eventEdit(user.uid, doc.id);
+          library.getController().eventDelete(user.uid, doc.id);
+        })
       })
-      .catch(function(err){
-        console.log(err);
-        console.log("Intento fallido")
+    },
+
+    gotUserLike: function(docId, likesArray) {
+      const likeButoon = library.get('like' + docId);
+      const userCurrent = window.redSocial.obtainUser();
+      if (likesArray.includes(userCurrent.uid)) {
+        likeButoon.classList.add('like');
+      } else {
+        likeButoon.classList.remove('like');
+      }
+    },
+
+    likes: function(docId, userIdPost, likesArray) {
+      const labelLike = library.get('likes-label' + docId);
+      const userCurrent = window.redSocial.obtainUser();
+
+      var postRef = db.collection("posts").doc(userIdPost).collection('private_post').doc(docId);
+
+      if(likesArray.length > 0){
+        likesArray.forEach(element => {
+          if(element === userCurrent.uid){
+            // Elimina el elemento de un campo de tipo array
+            postRef.update({
+              likes: firebase.firestore.FieldValue.arrayRemove(userCurrent.uid)
+            }).then(function(){
+              console.log('el like se eliminó');
+              labelLike.innerText = ((likesArray.length - 1) > 0) ? (likesArray.length - 1) : '';
+            });
+          }
+          else{
+            // agrega un elemento al campo likes que es de tipo array
+            postRef.update({
+              likes: firebase.firestore.FieldValue.arrayUnion(userCurrent.uid)
+            }).then(function(){
+              console.log('el like se agregó');
+              labelLike.innerText = ((likesArray.length + 1) > 0) ? (likesArray.length + 1) : '';
+            });
+          }
+        });
+      }else{
+        postRef.update({
+          likes: firebase.firestore.FieldValue.arrayUnion(userCurrent.uid)
+        }).then(function(){
+          console.log('el like se agregó');
+          labelLike.innerText = ((likesArray.length + 1) > 0) ? (likesArray.length + 1) : '';
+        });
+      }
+    },
+
+    printWall: function() {
+      let tabla = library.get('tabla');
+      tabla.innerHTML = '';
+      db.collection('posts').get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(docMain) {
+          console.log(docMain.id, " => ", docMain.data());
+          db.collection('posts').doc(docMain.data().userId).collection('private_post').orderBy('time', 'desc').limit(10).onSnapshot((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              console.log(`${doc.id}=>${doc.data()}`);
+              const likesCount = (doc.data().likes.length > 0) ? doc.data().likes.length : '';
+              // console.log(doc.data().likes[0]);
+              let messages = `
+                <tr>
+                  <td>
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">${doc.data().userName}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
+                        <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
+                        <button id="like${doc.id}" class="btn btn-primary" type="button"><i class="fab fa-gratipay"></i></button>
+                        <label id="likes-label${doc.id}">${likesCount}</label>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                `;
+              tabla.insertAdjacentHTML("beforeend", messages);
+              library.getController().eventLike(doc.id, docMain.data().userId, doc.data().likes);
+              library.getController().gotUserLike(doc.id, doc.data().likes);
+            })
+          })
+        });
+      });
+    },
+
+    updatePost: function(userId, docId) {
+      const button = library.get('edit-button' + docId);
+      const editIcon = library.get('icon' + docId);
+      const txtMessage = library.get('message' + docId);
+      editIcon.classList.toggle('fa-edit');
+      editIcon.classList.toggle('fa-save');
+      txtMessage.readOnly = false;
+
+      button.onclick = function() {
+        var postRef = db.collection("posts").doc(userId).collection('private_post').doc(docId);
+        return postRef.update({
+            message: txtMessage.value,
+            time: fechaHoy
+          })
+          .then(function() {
+            console.log("Document successfully updated!");
+            editIcon.classList.toggle('fa-save');
+            editIcon.classList.toggle('fa-edit');
+            txtMessage.readOnly = true;
+          })
+          .catch(function(error) {
+            // The document probably doesn't exist.
+            console.error("Error updating document: ", error);
+          });
+      }
+    },
+
+    deletePost: function(userId, docId) {
+      db.collection("posts").doc(userId).collection('private_post').doc(docId).delete()
+        .then(function() {
+          console.log("Document successfully deleted!");
+        }).catch(function(error) {
+          console.error("Error removing document: ", error);
+        });
+    },
+
+    confirmDelete: (userId, docId) => {
+      if (confirm('¿Estas seguro de eliminar este post?')) {
+        library.getController().deletePost(userId, docId);
+      }
+    },
+
+    eventEdit: (userId, docId) => {
+      const editButton = library.get('edit-button' + docId);
+      editButton.addEventListener('click', () => {
+        library.getController().updatePost(userId, docId);
+
       })
+    },
+
+    eventDelete: (userId, docId) => {
+      const deleteButton = library.get('delete-button' + docId);
+      deleteButton.addEventListener('click', () => {
+        library.getController().confirmDelete(userId, docId);
+      })
+    },
+
+    eventLike: (docId, userIdPost, likesArray) => {
+      const likeButoon = library.get('like' + docId);
+      let tabla = library.get('tabla');
+      likeButoon.addEventListener('click', () => {
+        library.getController().likes(docId, userIdPost, likesArray);
+        tabla.innerHTML = '';
+      })
+    },
+
+    backPerfil: () => {
+      window.location.hash = '/editprofile';
+    },
+
+    goWall: () => {
+      window.location.hash = '/wall';
+    },
+
+    googleSigIn: function() {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+      firebase.auth().signInWithPopup(provider)
+        .then(function(result) {
+          var token = result.credential.accessToken;
+          console.log(result)
+          console.log("success.goole Account")
+          window.location.hash = '#/editprofile';
+        })
+        .catch(function(err) {
+          console.log(err);
+          console.log("Intento fallido")
+        })
     }
   });
 })(window, document);
