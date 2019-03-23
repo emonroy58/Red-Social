@@ -17,6 +17,13 @@
       const email = form.email_input.value;
       const password = form.password.value;
       const passwordConfirm = form.confirm_password.value;
+
+      document.getElementById("alert-password").style.display = "none";
+      document.getElementById("alert-confirm-pass").style.display = "none";
+      document.getElementById("alert-email").style.display = "none";
+
+
+
       const checkPasswords = window.redSocial.checkPasswords(password, passwordConfirm);
       if (checkPasswords) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -41,14 +48,16 @@
           .catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
-            var errorMessage = error.message;
-            switch (errorMessage) {
-              case 'EMAIL_EXISTS':
-                console.log('devfszvdf');
-                alert('this email already exist');
+            switch (errorCode) {
+              case 'auth/email-already-in-use':
+                document.getElementById("alert-email").style.display = "block";
+                document.getElementById("email_text").innerHTML = 'this email already exist';
                 break;
-              case 'INVALID_EMAIL':
-                alert('this email is invalid please enter a valid one');
+              case 'auth/invalid-email':
+                document.getElementById("alert-email").style.display = "block";
+                document.getElementById("email_text").innerHTML = 'El correo electrónico es invalido';
+                break;
+              default:
                 break;
             }
           });
@@ -137,7 +146,8 @@
 
       const postField = document.getElementById('post-field');
       const user = firebase.auth().currentUser;
-      const isPublic = document.getElementById('privacy');
+      const privacyField = document.getElementById('privacy');
+      const isPublic = privacyField.options[privacyField.selectedIndex].value;
       if (postField.value != null) {
         db.collection("posts").doc(user.uid).set({
             userId: user.uid
@@ -152,7 +162,7 @@
             userName: user.displayName,
             message: postField.value,
             time: fechaHoy,
-            isPublic: false,
+            isPublic: isPublic,
             likes: 0,
             comments: []
           })
@@ -222,8 +232,6 @@
               console.log('el like se eliminó');
               labelLike.innerText = ((likesArray.length - 1) > 0) ? (likesArray.length - 1) : '';
             });
-
-
           }
           else{
             // agrega un elemento al campo likes que es de tipo array
@@ -307,7 +315,6 @@
       }
     },
 
-
     deletePost: function(userId, docId) {
       db.collection("posts").doc(userId).collection('private_post').doc(docId).delete()
         .then(function() {
@@ -363,7 +370,6 @@
           var token = result.credential.accessToken;
           console.log(result)
           console.log("success.goole Account")
-
           window.location.hash = '#/editprofile';
         })
         .catch(function(err) {

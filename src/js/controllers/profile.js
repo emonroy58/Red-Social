@@ -35,7 +35,6 @@ window.redSocial = {
         window.location.hash='#/';
         console.log(user)
           .then(function() {
-
             // Email sent.
             console.log('Enviando email');
           }).catch(function(error) {
@@ -50,9 +49,7 @@ window.redSocial = {
           document.getElementById("alert-password").style.display = "block";
           return false;
         }
-
         let passwordMatch = pass == confirmPass;
-
         if (!passwordMatch) {
           document.getElementById("alert-confirm-pass").style.display = "block";
         }
