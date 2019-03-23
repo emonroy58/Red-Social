@@ -94,6 +94,7 @@
         if (user) {
           console.log('hay usuario')
           if(location.href.includes('editprofile')){
+            const postButton = library.get('add-btn');
             library.getController().printData();
             var displayName = user.displayName;
             if (displayName == null) {
@@ -109,6 +110,10 @@
             const userNameField = library.get('user-name');
             photoDefault.setAttribute("src", photoURL);
             userNameField.value = displayName;
+
+            postButton.addEventListener('click', () => {
+              library.getController().addPost();
+              })
 
           }else if(location.href.includes('wall')){
             library.getController().printWall();
@@ -163,7 +168,7 @@
             message: postField.value,
             time: fechaHoy,
             isPublic: isPublic,
-            likes: 0,
+            likes: [],
             comments: []
           })
 
@@ -256,32 +261,34 @@
     printWall: function() {
       let tabla = library.get('tabla');
       tabla.innerHTML = '';
-      db.collection('posts').get().then(function(querySnapshot) {
+      db.collection('posts').onSnapshot(function(querySnapshot) {
         querySnapshot.forEach(function(docMain) {
           console.log(docMain.id, " => ", docMain.data());
           db.collection('posts').doc(docMain.data().userId).collection('private_post').orderBy('time', 'desc').limit(10).onSnapshot((querySnapshot) => {
             querySnapshot.forEach((doc) => {
               console.log(`${doc.id}=>${doc.data()}`);
-              const likesCount = (doc.data().likes.length > 0) ? doc.data().likes.length : '';
-              // console.log(doc.data().likes[0]);
-              let messages = `
-                <tr>
-                  <td>
-                    <div class="card">
-                      <div class="card-body">
-                        <h5 class="card-title">${doc.data().userName}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
-                        <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
-                        <button id="like${doc.id}" class="btn btn-primary" type="button"><i class="fab fa-gratipay"></i></button>
-                        <label id="likes-label${doc.id}">${likesCount}</label>
+              if(doc.data().isPublic === 'true'){
+                const likesCount = (doc.data().likes.length > 0) ? doc.data().likes.length : '';
+                // console.log(doc.data().likes[0]);
+                let messages = `
+                  <tr>
+                    <td>
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">${doc.data().userName}</h5>
+                          <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
+                          <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
+                          <button id="like${doc.id}" class="btn btn-primary" type="button"><i class="fab fa-gratipay"></i></button>
+                          <label id="likes-label${doc.id}">${likesCount}</label>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-                `;
-              tabla.insertAdjacentHTML("beforeend", messages);
-              library.getController().eventLike(doc.id, docMain.data().userId, doc.data().likes);
-              library.getController().gotUserLike(doc.id, doc.data().likes);
+                    </td>
+                  </tr>
+                  `;
+                tabla.insertAdjacentHTML("beforeend", messages);
+                library.getController().eventLike(doc.id, docMain.data().userId, doc.data().likes);
+                library.getController().gotUserLike(doc.id, doc.data().likes);
+              }
             })
           })
         });
