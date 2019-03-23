@@ -235,7 +235,10 @@
               likes: firebase.firestore.FieldValue.arrayRemove(userCurrent.uid)
             }).then(function(){
               console.log('el like se eliminó');
-              labelLike.innerText = ((likesArray.length - 1) > 0) ? (likesArray.length - 1) : '';
+              // labelLike.innerText = ((likesArray.length - 1) > 0) ? (likesArray.length - 1) : '';
+              let tabla = library.get('tabla');
+              tabla.innerHTML = '';
+              library.getController().printWall();
             });
           }
           else{
@@ -244,7 +247,7 @@
               likes: firebase.firestore.FieldValue.arrayUnion(userCurrent.uid)
             }).then(function(){
               console.log('el like se agregó');
-              labelLike.innerText = ((likesArray.length + 1) > 0) ? (likesArray.length + 1) : '';
+              // labelLike.innerText = ((likesArray.length + 1) > 0) ? (likesArray.length + 1) : '';
             });
           }
         });
@@ -253,7 +256,10 @@
           likes: firebase.firestore.FieldValue.arrayUnion(userCurrent.uid)
         }).then(function(){
           console.log('el like se agregó');
-          labelLike.innerText = ((likesArray.length + 1) > 0) ? (likesArray.length + 1) : '';
+          // labelLike.innerText = ((likesArray.length + 1) > 0) ? (likesArray.length + 1) : '';
+          let tabla = library.get('tabla');
+          tabla.innerHTML = '';
+          library.getController().printWall();
         });
       }
     },
@@ -357,7 +363,7 @@
       let tabla = library.get('tabla');
       likeButoon.addEventListener('click', () => {
         library.getController().likes(docId, userIdPost, likesArray);
-        tabla.innerHTML = '';
+
       })
     },
 
