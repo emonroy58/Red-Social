@@ -1,8 +1,8 @@
 <section>
 
     <section class="conta-btnall">
-       <button type="button" id="edit_button" onclick="library.getController().printWall()">Todos los User</button>      
-        
+       <button type="button" id="edit_button" onclick="library.getController().printWall()">Todos los User</button>
+
 </section>
 
   <section class="text-center">
@@ -17,6 +17,10 @@
     <h3><span id="user-name"></span></h3>
     <input id="post-field" type="text" name="message">
     <button id="add-btn" type="button" onclick="library.getController().addPost()">Publicar</button>
+    <select name="privacy">
+    <option value="true">Publico
+    <option value="false">Privado
+    </select>
     <!-- <section id="posts" class="card text-center"> -->
     <table class="table">
       <thead>
