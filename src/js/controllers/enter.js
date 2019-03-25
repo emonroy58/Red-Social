@@ -28,22 +28,23 @@
       if (checkPasswords) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
           .then(function(result) {
-            console.log(result)
+           // console.log(result)
             window.location.hash = '#/editprofile';
             result = window.redSocial.checkEmail()
             return result
           })
           .then(function(response) {
-            console.log(response);
+            //console.log(response);
             //parse json to create a js object
             response = response.json;
             //get a user object inside the response object
-            const user = response.user;
+           // const user = response.user;
             //Save the data for the current User
-            let userData = {
+          /*  const userData = {
               id: user.uid,
-              email: user.email,
-            }
+              email: user.email
+            }*/
+            
           })
           .catch(function(error) {
             // Handle Errors here.
@@ -72,7 +73,7 @@
       firebase.auth().signInWithEmailAndPassword(emailSingIn, passwordSingIn)
         .then(function() {
 
-          console.log('userSigIn')
+          //console.log('userSigIn')
           let userSigIn = window.redSocial.obtainUser();
           if (userSigIn.emailVerified) {
             window.location.hash = '#/editprofile';
@@ -105,6 +106,7 @@
             if (user.photoURL != null) {
               photoURL = user.photoURL;
             }
+            
 
             const photoDefault = library.get('cliente-photo');
             const userNameField = library.get('user-name');
@@ -131,7 +133,7 @@
       isEditable = !isEditable;
       if (isEditable) {
         userNameField.readOnly = false;
-        editButton.innerHTML = 'Save';
+        editButton.innerHTML = `<i class="far fa-save"></i> Save`;
       } else {
         firebase.auth().currentUser.updateProfile({
             displayName: userNameField.value
@@ -143,7 +145,7 @@
             alert('something went wrong');
           })
         userNameField.readOnly = true;
-        editButton.innerHTML = 'Edit';
+        editButton.innerHTML = `<i class="far fa-edit"></i> Editar Nombre`;
       }
     },
 
@@ -197,8 +199,8 @@
                   <h5 class="card-title">${doc.data().userName}</h5>
                   <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
                   <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
-                  <button id="edit-button${doc.id}" class="btn btn-primary" type="submit"><i id="icon${doc.id}" class="far fa-edit"></i></button>
-                  <button id="delete-button${doc.id}" class="btn btn-primary" type="submit"><i class="far fa-trash-alt"></i></button>
+                  <button id="edit-button${doc.id}" class="btn btn-warning" type="submit"><i id="icon${doc.id}" class="far fa-edit"></i></button>
+                  <button id="delete-button${doc.id}" class="btn btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
                 </div>
               </div>
             </td>
@@ -299,6 +301,7 @@
           })
         });
       });
+
     },
 
     updatePost: function(userId, docId) {
@@ -339,6 +342,7 @@
 
     confirmDelete: (userId, docId) => {
       if (confirm('¿Estas seguro de eliminar este post?')) {
+       
         library.getController().deletePost(userId, docId);
       }
     },
