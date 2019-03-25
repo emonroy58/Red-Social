@@ -6,6 +6,7 @@
     storageBucket: "redsocial-501ac.appspot.com",
     messagingSenderId: "246552558120"
   };
+
   firebase.initializeApp(config);
 
 

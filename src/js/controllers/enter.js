@@ -1,17 +1,15 @@
 (function(window, document) {
-
-let isEditable = false;
-//const userData;
-let d = new Date(); //obtener fecha
-let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-
+  let isEditable = false;
+  let d = new Date(); //obtener fecha
+  let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+  let idBtn;
   library.controller('enter', {
 
-    showFormLogin: function(){
+    showFormLogin: function() {
       const loginSection = library.get('login-section');
       loginSection.style.display = "block";
     },
-    showFormSingUp: function(){
+    showFormSingUp: function() {
       const registerSection = library.get('register-section');
       registerSection.style.display = "block";
     },
@@ -19,7 +17,14 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
       const email = form.email_input.value;
       const password = form.password.value;
       const passwordConfirm = form.confirm_password.value;
-      const checkPasswords = window.redSocial.checkPasswords(password,passwordConfirm);
+
+      document.getElementById("alert-password").style.display = "none";
+      document.getElementById("alert-confirm-pass").style.display = "none";
+      document.getElementById("alert-email").style.display = "none";
+
+
+
+      const checkPasswords = window.redSocial.checkPasswords(password, passwordConfirm);
       if (checkPasswords) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
           .then(function(result) {
@@ -44,14 +49,16 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
           .catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
-            var errorMessage = error.message;
-            switch (errorMessage) {
-              case 'EMAIL_EXISTS':
-              //console.log('devfszvdf');
-                alert('this email already exist');
+            switch (errorCode) {
+              case 'auth/email-already-in-use':
+                document.getElementById("alert-email").style.display = "block";
+                document.getElementById("email_text").innerHTML = 'this email already exist';
                 break;
-              case 'INVALID_EMAIL':
-                alert('this email is invalid please enter a valid one');
+              case 'auth/invalid-email':
+                document.getElementById("alert-email").style.display = "block";
+                document.getElementById("email_text").innerHTML = 'El correo electrónico es invalido';
+                break;
+              default:
                 break;
             }
           });
@@ -86,23 +93,33 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
     observer: function() {
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-          //console.log('hay usuario')
+          console.log('hay usuario')
+          if(location.href.includes('editprofile')){
+            const postButton = library.get('add-btn');
+            library.getController().printData();
+            var displayName = user.displayName;
+            if (displayName == null) {
+              displayName = user.email;
+            }
 
-          library.getController().printData();
-          var displayName = user.displayName;
-          if (displayName == null) {
-            displayName = user.email;
+            var photoURL = 'img/profile.jpg';
+            if (user.photoURL != null) {
+              photoURL = user.photoURL;
+            }
+            
+
+            const photoDefault = library.get('cliente-photo');
+            const userNameField = library.get('user-name');
+            photoDefault.setAttribute("src", photoURL);
+            userNameField.value = displayName;
+
+            postButton.addEventListener('click', () => {
+              library.getController().addPost();
+              })
+
+          }else if(location.href.includes('wall')){
+            library.getController().printWall();
           }
-
-          var photoURL = 'img/profile.jpg';
-          if (user.photoURL != null) {
-            photoURL = user.photoURL;
-          }
-
-          const photoDefault = library.get('cliente-photo');
-          const userNameField = library.get('user-name');
-          photoDefault.setAttribute("src", photoURL);
-          userNameField.value = displayName;
         } else {
           window.location.hash = '#/';
         }
@@ -116,7 +133,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
       isEditable = !isEditable;
       if (isEditable) {
         userNameField.readOnly = false;
-        editButton.innerHTML = 'Save';
+        editButton.innerHTML = `<i class="far fa-save"></i> Save`;
       } else {
         firebase.auth().currentUser.updateProfile({
             displayName: userNameField.value
@@ -128,7 +145,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
             alert('something went wrong');
           })
         userNameField.readOnly = true;
-        editButton.innerHTML = 'Edit';
+        editButton.innerHTML = `<i class="far fa-edit"></i> Editar Nombre`;
       }
     },
 
@@ -136,7 +153,8 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
 
       const postField = document.getElementById('post-field');
       const user = firebase.auth().currentUser;
-      const isPublic = document.getElementById('privacy');
+      const privacyField = document.getElementById('privacy');
+      const isPublic = privacyField.options[privacyField.selectedIndex].value;
       if (postField.value != null) {
         db.collection("posts").doc(user.uid).set({
             userId: user.uid
@@ -151,7 +169,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
             userName: user.displayName,
             message: postField.value,
             time: fechaHoy,
-            isPublic: false,
+            isPublic: isPublic,
             likes: [],
             comments: []
           })
@@ -166,7 +184,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
       }
     },
 
-    printData: function () {
+    printData: function() {
       var tabla = document.getElementById('tabla');
       const user = firebase.auth().currentUser;
       db.collection('posts').doc(user.uid).collection('private_post').orderBy('time', 'desc').limit(10).onSnapshot((querySnapshot) => {
@@ -181,86 +199,98 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
                   <h5 class="card-title">${doc.data().userName}</h5>
                   <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
                   <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
-                  <button id="edit-button${doc.id}" class="btn btn-primary" type="submit"onclick="library.getController().updatePost('${user.uid}','${doc.id}','${doc.data().message}')"><i id="icon${doc.id}" class="far fa-edit"></i></button>
-                  <button class="btn btn-primary" type="submit" onclick="library.getController().confirmDelete('${user.uid}','${doc.id}')"><i class="far fa-trash-alt"></i></button>
+                  <button id="edit-button${doc.id}" class="btn btn-warning" type="submit"><i id="icon${doc.id}" class="far fa-edit"></i></button>
+                  <button id="delete-button${doc.id}" class="btn btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
                 </div>
               </div>
             </td>
           </tr>
           `;
           tabla.insertAdjacentHTML("beforeend", messages);
+          library.getController().eventEdit(user.uid, doc.id);
+          library.getController().eventDelete(user.uid, doc.id);
         })
       })
     },
 
-    gotUserLike: function (likes, userId) {
-      if (likes.includes(userId)) {
-        return 'like';
+    gotUserLike: function(docId, likesArray) {
+      const likeButoon = library.get('like' + docId);
+      const userCurrent = window.redSocial.obtainUser();
+      if (likesArray.includes(userCurrent.uid)) {
+        likeButoon.classList.add('like');
+      } else {
+        likeButoon.classList.remove('like');
       }
-      return '';
     },
 
-    likes: function (docId, userIdPost, likesCons) {
-      const button = library.get('like'+ docId);
-      if (button.classList.contains('like')) {
-          //remove a like
-          button.classList.remove("like");
+    likes: function(docId, userIdPost, likesArray) {
+      const labelLike = library.get('likes-label' + docId);
+      const userCurrent = window.redSocial.obtainUser();
 
+      var postRef = db.collection("posts").doc(userIdPost).collection('private_post').doc(docId);
 
-      } else {
-        //add a like
-      // button.add("like");
-        button.classList.add('like')
-      //  button.onclick = function() {
-          const obtUser = window.redSocial.obtainUser();
-          var arrayLikes = likesCons.push(obtUser.uid);
-          console.log(arrayLikes.length);
-          var  postRef = db.collection("posts").doc(userIdPost).collection('private_post').doc(docId);
-              //var logLike= likes.length;
-
-              return postRef.update({
-              likes: [arrayLikes]
-            })
-
-            .then(function() {
-              console.log("Document successfully updated!");
-
-            })
-            .catch(function(error) {
-              // The document probably doesn't exist.
-              console.error("Error updating document: ", error);
+      if(likesArray.length > 0){
+        likesArray.forEach(element => {
+          if(element === userCurrent.uid){
+            // Elimina el elemento de un campo de tipo array
+            postRef.update({
+              likes: firebase.firestore.FieldValue.arrayRemove(userCurrent.uid)
+            }).then(function(){
+              console.log('el like se eliminó');
+              labelLike.innerText = ((likesArray.length - 1) > 0) ? (likesArray.length - 1) : '';
             });
-    //  }
-
-    }
-  },
+          }
+          else{
+            // agrega un elemento al campo likes que es de tipo array
+            postRef.update({
+              likes: firebase.firestore.FieldValue.arrayUnion(userCurrent.uid)
+            }).then(function(){
+              console.log('el like se agregó');
+              labelLike.innerText = ((likesArray.length + 1) > 0) ? (likesArray.length + 1) : '';
+            });
+          }
+        });
+      }else{
+        postRef.update({
+          likes: firebase.firestore.FieldValue.arrayUnion(userCurrent.uid)
+        }).then(function(){
+          console.log('el like se agregó');
+          labelLike.innerText = ((likesArray.length + 1) > 0) ? (likesArray.length + 1) : '';
+        });
+      }
+    },
 
     printWall: function() {
-      var tabla = library.get('tabla');
+      let tabla = library.get('tabla');
       tabla.innerHTML = '';
-      db.collection('posts').get().then(function(querySnapshot) {
+      db.collection('posts').onSnapshot(function(querySnapshot) {
         querySnapshot.forEach(function(docMain) {
           console.log(docMain.id, " => ", docMain.data());
           db.collection('posts').doc(docMain.data().userId).collection('private_post').orderBy('time', 'desc').limit(10).onSnapshot((querySnapshot) => {
             querySnapshot.forEach((doc) => {
               console.log(`${doc.id}=>${doc.data()}`);
-              let likesCons = doc.data().likes;
-              console.log(doc.data().likes[0]);
-              let messages = `
-                <tr>
-                  <td>
-                    <div class="card">
-                      <div class="card-body">
-                        <h5 class="card-title">${doc.data().userName}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
-                        <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
-                        <button id="like${doc.id}" class="btn btn-primary (library.getController().gotUserLike(${doc.data().likes}, ${docMain.data().userId}))" type="submit" onclick="library.getController().likes('${doc.id}', '${docMain.data().userId}', ['${likesCons}'])"><i class="fab fa-gratipay"></i></button>
+              if(doc.data().isPublic === 'true'){
+                const likesCount = (doc.data().likes.length > 0) ? doc.data().likes.length : '';
+                // console.log(doc.data().likes[0]);
+                let messages = `
+                  <tr>
+                    <td>
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">${doc.data().userName}</h5>
+                          <h6 class="card-subtitle mb-2 text-muted">${doc.data().time}</h6>
+                          <textarea id="message${doc.id}" class="form-control" readOnly>${doc.data().message}</textarea><br>
+                          <button id="like${doc.id}" class="btn btn-primary" type="button"><i class="fab fa-gratipay"></i></button>
+                          <label id="likes-label${doc.id}">${likesCount}</label>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-                `;
-              tabla.insertAdjacentHTML("beforeend", messages);
+                    </td>
+                  </tr>
+                  `;
+                tabla.insertAdjacentHTML("beforeend", messages);
+                library.getController().eventLike(doc.id, docMain.data().userId, doc.data().likes);
+                library.getController().gotUserLike(doc.id, doc.data().likes);
+              }
             })
           })
         });
@@ -268,7 +298,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
 
     },
 
-     updatePost: function(userId, docId) {
+    updatePost: function(userId, docId) {
       const button = library.get('edit-button' + docId);
       const editIcon = library.get('icon' + docId);
       const txtMessage = library.get('message' + docId);
@@ -278,7 +308,7 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
 
       button.onclick = function() {
         var postRef = db.collection("posts").doc(userId).collection('private_post').doc(docId);
-            return postRef.update({
+        return postRef.update({
             message: txtMessage.value,
             time: fechaHoy
           })
@@ -295,7 +325,6 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
       }
     },
 
-
     deletePost: function(userId, docId) {
       db.collection("posts").doc(userId).collection('private_post').doc(docId).delete()
         .then(function() {
@@ -305,28 +334,59 @@ let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + 
         });
     },
 
-    confirmDelete: (userId, docId)=>{
-      if (confirm('¿Estas seguro de eliminar este post?')){
-           library.getController().deletePost(userId, docId)
-        }
-     },
-   
+    confirmDelete: (userId, docId) => {
+      if (confirm('¿Estas seguro de eliminar este post?')) {
+       
+        library.getController().deletePost(userId, docId);
+      }
+    },
 
-    googleSigIn: function(){
+    eventEdit: (userId, docId) => {
+      const editButton = library.get('edit-button' + docId);
+      editButton.addEventListener('click', () => {
+        library.getController().updatePost(userId, docId);
+
+      })
+    },
+
+    eventDelete: (userId, docId) => {
+      const deleteButton = library.get('delete-button' + docId);
+      deleteButton.addEventListener('click', () => {
+        library.getController().confirmDelete(userId, docId);
+      })
+    },
+
+    eventLike: (docId, userIdPost, likesArray) => {
+      const likeButoon = library.get('like' + docId);
+      let tabla = library.get('tabla');
+      likeButoon.addEventListener('click', () => {
+        library.getController().likes(docId, userIdPost, likesArray);
+        tabla.innerHTML = '';
+      })
+    },
+
+    backPerfil: () => {
+      window.location.hash = '/editprofile';
+    },
+
+    goWall: () => {
+      window.location.hash = '/wall';
+    },
+
+    googleSigIn: function() {
       var provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
       firebase.auth().signInWithPopup(provider)
-      .then(function(result){
-        var token = result.credential.accessToken;
-        console.log(result)
-        console.log("success.goole Account")
-
-        window.location.hash = '#/editprofile';
-      })
-      .catch(function(err){
-        console.log(err);
-        console.log("Intento fallido")
-      })
+        .then(function(result) {
+          var token = result.credential.accessToken;
+          console.log(result)
+          console.log("success.goole Account")
+          window.location.hash = '#/editprofile';
+        })
+        .catch(function(err) {
+          console.log(err);
+          console.log("Intento fallido")
+        })
     }
   });
 })(window, document);

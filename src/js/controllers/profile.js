@@ -35,10 +35,8 @@ window.redSocial = {
         user.sendEmailVerification()
         alert('Tu registro se encuentra en proceso, favor de validar mail');
         window.location.hash='#/';
-        user()
-       // console.log(user)
+        console.log(user)
           .then(function() {
-
             // Email sent.
          //   console.log('Enviando email');
           }).catch(function() {
@@ -54,9 +52,7 @@ window.redSocial = {
           document.getElementById("alert-password").style.display = "block";
           return false;
         }
-
         let passwordMatch = pass == confirmPass;
-
         if (!passwordMatch) {
           document.getElementById("alert-confirm-pass").style.display = "block";
         }

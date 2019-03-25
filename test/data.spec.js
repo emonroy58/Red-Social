@@ -9,3 +9,10 @@ describe('es un Objeto llamado redSocial', () => { // test si es un objeto
       expect(typeof window.redSocial).toBe('object');
     });
   });
+
+  describe('redSocial.obtainUser', () => {
+
+    it('debería ser una función', () => {
+      assert.equal(typeof redSocial.obtainUser, 'function');
+  });
+});
