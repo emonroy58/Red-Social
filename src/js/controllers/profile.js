@@ -1,14 +1,16 @@
 window.redSocial = {
+ 
     signOut : () => {
 
         firebase.auth().signOut()
         .then(function() {
           // Sign-out successful.
-          console.log('saliendo...');
+          //console.log('saliendo...');
           window.location.hash='#/';
-        }).catch(function(error) {
+        }).catch(function() {
+          
           // An error happened.
-          console.log(error);
+         // console.log(error);
         });
       },
 
@@ -28,18 +30,19 @@ window.redSocial = {
       },
 
       checkEmail: () => {
-        console.log('mail ennviado')
+       // console.log('mail ennviado')
         var user = firebase.auth().currentUser;
         user.sendEmailVerification()
         alert('Tu registro se encuentra en proceso, favor de validar mail');
-        window.redSocial.signOut();
+        window.location.hash='#/';
         console.log(user)
           .then(function() {
             // Email sent.
-            console.log('Enviando email');
-          }).catch(function(error) {
+         //   console.log('Enviando email');
+          }).catch(function() {
+           
             // An error happened.
-            console.log(error);
+          //  console.log(error);
           });
       },
 
