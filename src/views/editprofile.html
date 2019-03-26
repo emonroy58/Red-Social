@@ -1,22 +1,23 @@
 
+<ul class="nav nav-tabs justify-content-end">
+    <li class="nav-item">
+      <a id="edit_button" class="nav-link" role="button" onclick="library.getController().editUser()"><i class="far fa-edit"></i>Editar nombre</a>
+    </li>
+    <li class="nav-item">
+      <a id="wall-button"  class="nav-link"role="button" onclick="library.getController().goWall()"><i class="fas fa-users"></i> Muro</a>
+    </li>
+    <li class="nav-item">
+      <a id="signOut-button" class="nav-link" role="button" onclick="window.redSocial.signOut()"><i class="fas fa-sign-out-alt"></i> Salir</a>
+    </li>
+  </ul>
 
 <div id= "counter-profile">
-    <ul class="nav justify-content-center">
-        <li class="nav-item dropdown">
-            <img id="cliente-photo" class="img-thumbnail"  data-toggle="dropdown"  ></img>
-            <div class="dropdown-menu">  
-              <a  id="edit_button" class="dropdown-item" role="button" onclick="library.getController().editUser()"><i class="far fa-edit"></i> Editar nombre</a>              
-              <a id="wall-button"  class="dropdown-item" role="button" onclick="library.getController().goWall()"><i class="fas fa-users"></i> Muro</a>
-              <div class="dropdown-divider"></div>
-              <a id="signOut-button" class="dropdown-item" role="button" onclick="window.redSocial.signOut()"><i class="fas fa-sign-out-alt"></i> Salir</a>
-             
-            </div>
-          </li>
-        </ul>
-
-        <section class="count-name">
-            <input id="user-name" type="text" name="user-name" readonly>           
-         </section>
+      <section class="count-name">
+        <section >
+          <img id="cliente-photo" class="img-responsive"  data-toggle="dropdown"  ></img>
+        </section>
+        <input id="user-name" type="text" name="user-name" readonly>
+      </section>
   </div>
 
 
@@ -44,6 +45,5 @@
     </table>
   </section>
 
-  
+
 </div>
- 

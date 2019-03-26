@@ -298,6 +298,11 @@
 
     },
 
+    addPostWall: function(){
+     library.getController().addPost();
+     library.getController().printWall();
+   },
+
     updatePost: function(userId, docId) {
       const button = library.get('edit-button' + docId);
       const editIcon = library.get('icon' + docId);
