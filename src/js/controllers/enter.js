@@ -44,7 +44,7 @@
               id: user.uid,
               email: user.email
             }*/
-            
+
           })
           .catch(function(error) {
             // Handle Errors here.
@@ -106,7 +106,7 @@
             if (user.photoURL != null) {
               photoURL = user.photoURL;
             }
-            
+
 
             const photoDefault = library.get('cliente-photo');
             const userNameField = library.get('user-name');
@@ -342,7 +342,7 @@
 
     confirmDelete: (userId, docId) => {
       if (confirm('¿Estas seguro de eliminar este post?')) {
-       
+
         library.getController().deletePost(userId, docId);
       }
     },
@@ -381,7 +381,6 @@
 
     googleSigIn: function() {
       var provider = new firebase.auth.GoogleAuthProvider();
-      provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
       firebase.auth().signInWithPopup(provider)
         .then(function(result) {
           var token = result.credential.accessToken;
