@@ -2,7 +2,7 @@
   let isEditable = false;
   let d = new Date(); //obtener fecha
   let fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-  let idBtn;
+ 
   library.controller('enter', {
 
     showFormLogin: function() {
@@ -184,6 +184,11 @@
       }
     },
 
+    addPostWall: function(){
+      library.getController().addPost();
+      library.getController().printWall();
+    },
+
     printData: function() {
       var tabla = document.getElementById('tabla');
       const user = firebase.auth().currentUser;
@@ -289,7 +294,7 @@
                   `;
                 tabla.insertAdjacentHTML("beforeend", messages);
                 library.getController().eventLike(doc.id, docMain.data().userId, doc.data().likes);
-                library.getController().gotUserLike(doc.id, doc.data().likes);
+                library.getController().gotUserLike(doc.id, doc.data().likes);                
               }
             })
           })
@@ -375,7 +380,6 @@
 
     googleSigIn: function() {
       var provider = new firebase.auth.GoogleAuthProvider();
-      provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
       firebase.auth().signInWithPopup(provider)
         .then(function(result) {
           var token = result.credential.accessToken;

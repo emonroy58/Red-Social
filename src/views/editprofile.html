@@ -1,21 +1,22 @@
-
+<ul class="nav nav-tabs justify-content-end">
+    <li class="nav-item">
+      <a id="edit_button" class="nav-link" role="button" onclick="library.getController().editUser()"><i class="far fa-edit"></i>Editar nombre</a>
+    </li>
+    <li class="nav-item">
+      <a id="wall-button"  class="nav-link"role="button" onclick="library.getController().goWall()"><i class="fas fa-users"></i> Muro</a>
+    </li>
+    <li class="nav-item">
+      <a id="signOut-button" class="nav-link" role="button" onclick="window.redSocial.signOut()"><i class="fas fa-sign-out-alt"></i> Salir</a>
+    </li>    
+  </ul>
 
 <div id= "counter-profile">
-    <ul class="nav justify-content-center">
-        <li class="nav-item dropdown">
-            <img id="cliente-photo" class="img-thumbnail"  data-toggle="dropdown"  ></img>
-            <div class="dropdown-menu">  
-              <a  id="edit_button" class="dropdown-item" role="button" onclick="library.getController().editUser()"><i class="far fa-edit"></i> Editar nombre</a>              
-              <a id="wall-button"  class="dropdown-item" role="button" onclick="library.getController().goWall()"><i class="fas fa-users"></i> Muro</a>
-              <div class="dropdown-divider"></div>
-              <a id="signOut-button" class="dropdown-item" role="button" onclick="window.redSocial.signOut()"><i class="fas fa-sign-out-alt"></i> Salir</a>
-             
-            </div>
-          </li>
-        </ul>
-
-        <section class="count-name">
-            <input id="user-name" type="text" name="user-name" readonly>           
+       <section >
+            <img id="cliente-photo" class="img-thumbnail"  data-toggle="dropdown"  ></img> 
+                     
+         </section>
+         <section class="count-name">
+            <input id="user-name" type="text" name="user-name" readonly>
          </section>
   </div>
 
@@ -24,7 +25,7 @@
 <div id="count-post">
  <section id="wall">
     <h4> <label for="message">Estado</label> </h4>
-    <h3><span id="user-name"></span></h3>
+    <h3><span id="user-estado"></span></h3>
     <textarea id="post-field" class="form-control" name="message"></textarea>
     <button id="add-btn" class ="btn btn-light btn-outline-primary btn-sm ml-2 mt-2" type="button">Publicar</button>
     <select id="privacy" class="btn btn-light btn-sm ml-2 mt-2" name="privacy">
@@ -35,7 +36,7 @@
     <table class="table mt-2">
       <thead>
         <tr>
-          <th scope="col">Posts</th>
+          <th class="post-profile" scope="col">Posts</th>
         </tr>
       </thead>
       <tbody id="tabla">
