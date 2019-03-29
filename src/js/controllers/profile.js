@@ -1,5 +1,5 @@
 window.redSocial = {
- 
+
     signOut : () => {
 
         firebase.auth().signOut()
@@ -8,7 +8,7 @@ window.redSocial = {
           //console.log('saliendo...');
           window.location.hash='#/';
         }).catch(function() {
-          
+
           // An error happened.
          // console.log(error);
         });
@@ -30,7 +30,6 @@ window.redSocial = {
       },
 
       checkEmail: () => {
-       // console.log('mail ennviado')
         var user = firebase.auth().currentUser;
         user.sendEmailVerification()
         alert('Tu registro se encuentra en proceso, favor de validar mail');
@@ -38,11 +37,8 @@ window.redSocial = {
         console.log(user)
           .then(function() {
             // Email sent.
-         //   console.log('Enviando email');
           }).catch(function() {
-           
             // An error happened.
-          //  console.log(error);
           });
       },
 

@@ -7,17 +7,16 @@
     </li>
     <li class="nav-item">
       <a id="signOut-button" class="nav-link" role="button" onclick="window.redSocial.signOut()"><i class="fas fa-sign-out-alt"></i> Salir</a>
-    </li>    
+    </li>
   </ul>
 
 <div id= "counter-profile">
-       <section >
-            <img id="cliente-photo" class="img-thumbnail"  data-toggle="dropdown"  ></img> 
-                     
-         </section>
-         <section class="count-name">
-            <input id="user-name" type="text" name="user-name" readonly>
-         </section>
+      <section class="count-name">
+        <section >
+          <img id="cliente-photo" class="img-responsive"  data-toggle="dropdown"  ></img>
+        </section>
+        <input id="user-name" type="text" name="user-name" readonly>
+      </section>
   </div>
 
 
@@ -29,8 +28,8 @@
     <textarea id="post-field" class="form-control" name="message"></textarea>
     <button id="add-btn" class ="btn btn-light btn-outline-primary btn-sm ml-2 mt-2" type="button">Publicar</button>
     <select id="privacy" class="btn btn-light btn-sm ml-2 mt-2" name="privacy">
-    <option value="true">Publico
-    <option value="false">Privado
+    <option value="true">Publico</option>
+    <option value="false">Privado</option>
     </select>
     <!-- <section id="posts" class="card text-center"> -->
     <table class="table mt-2">
@@ -44,7 +43,4 @@
       </tbody>
     </table>
   </section>
-
-  
 </div>
- 
